@@ -20,12 +20,12 @@
 
 >   *(Tech stack: MySQL, Hibernate, SpringJPA)*
 
--   implemented caching during operation of the “core” -Into and -Out xml using
+-   implemented caching during running of the “core” -Into and -Out xml using
     the VTD-xml (world fastest xml processor);
 
 >   *(Tech stack: VTD-xml)*
 
--   \-for the server management and operation of the Android application the API
+-   \-for the server management and running of the Android application the API
     RESTFull service is implemented;
 
 >   *(Tech stack: Jackson, Jersey)*
