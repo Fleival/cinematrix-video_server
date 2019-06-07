@@ -20,7 +20,7 @@
 
 >   *(Tech stack: MySQL, Hibernate, SpringJPA)*
 
--   implemented caching during operation of the “core” -Into and -From xml using
+-   implemented caching during operation of the “core” -Into and -Out xml using
     the VTD-xml (world fastest xml processor);
 
 >   *(Tech stack: VTD-xml)*
