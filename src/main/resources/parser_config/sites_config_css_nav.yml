@@ -1,0 +1,95 @@
+# Configuration file for sites to parse
+---
+name: 'Filmix'
+url: 'http://filmix.cc'
+saveDir: 'files/sites/tmp_html'
+fileExtension: '.html'
+separator: '/'
+pageQuerySeparator: 'page'
+#MAIN_SITE:
+articleLastPageSelector: '#dle-content>div>a:nth-last-child(2)'
+articleListLastPageIndex:
+articleItemURLSelector: '#dle-content > article > div.short > a'
+#FILMS:
+#filmCategorySelector: '#header>div>nav>ul>li:nth-child(1) a[href]'
+filmCategorySelector: '#header > div > nav > ul > li:nth-child(1) > div > ul:nth-child(n+2) > li a[href]'
+filmListLastPageSelector: '#dle-content>div>a:nth-last-child(2)'
+filmListUrl: 'http://filmix.cc/films'
+filmListLastPageIndex:
+#serialCategorySelector: '#header>div>nav>ul>li:nth-child(2) a[href]'
+#SERIALS:
+serialCategorySelector: '#header > div > nav > ul > li:nth-child(2) > div > ul:nth-child(n+2) > li a[href]'
+serialListLastPageSelector: '#dle-content>div>a:nth-last-child(2)'
+serialListUrl: 'http://filmix.cc/serialy'
+serialListLastPageIndex:
+#cartoonCategorySelector: '#header>div>nav>ul>li:nth-child(3) a[href]'
+#CARTOONS:
+cartoonCategorySelector: '#header > div > nav > ul > li:nth-child(3) > div > ul:nth-child(n+2) > li a[href]'
+cartoonListLastPageSelector: '#dle-content>div>a:nth-last-child(2)'
+cartoonListUrl: 'http://filmix.cc/multfilmy'
+cartoonListLastPageIndex:
+categoryListElementSelector: '#header>div>nav>ul>li:nth-child(1)>div>ul:gt(0)>li>a'
+categoryListElementUrlAttr: 'href'
+videoTitleKey: 'class'
+videoTitleRegex: 'videotitle'
+videoAbsUrlKey: 'href'
+thumbnailUrlKey: 'class'
+thumbnailUrlRegex: 'thumbnails'
+thumbnailAbsUrlKey: 'src'
+durationElementKey: 'class'
+durationElementRegex: 'duration'
+ratingElementKey: 'class'
+ratingElementRegex: 'rating'
+videoSrcElementsKey: 'class'
+videoSrcElementsRegex: 'player2-container'
+videoSrcElementAttrKey: 'value'
+personsSectionUrl: 'http://filmix.cc/persons'
+personListLastPageIndex:
+personListLastPageIndexSelector: '#dle-content > div > div > div > div > a:nth-child(6)'
+personItemURLSelector: '#dle-content > article > div.short > a'
+---
+name: FilmixZ
+url: ''
+saveDir: ''
+fileExtension: ''
+separator: "/"
+pageQuerySeparator: ''
+#MAIN_SITE:
+articleLastPageSelector: ''
+articleListLastPageIndex:
+articleItemURLSelector: ''
+#FILMS:
+filmCategorySelector: ''
+filmListLastPageSelector: ''
+filmListUrl: ''
+filmListLastPageIndex: ''
+#SERIALS:
+serialCategorySelector: ''
+serialListLastPageSelector: ''
+serialListUrl: ''
+serialListLastPageIndex:
+#CARTOONS:
+cartoonCategorySelector: ''
+cartoonListLastPageSelector: ''
+cartoonListUrl: ''
+cartoonListLastPageIndex:
+categoryListElementSelector: ''
+categoryListElementUrlAttr: ''
+videoTitleKey: ''
+videoTitleRegex: ''
+videoAbsUrlKey: ''
+thumbnailUrlKey: ''
+thumbnailUrlRegex: ''
+thumbnailAbsUrlKey: ''
+durationElementKey: ''
+durationElementRegex: ''
+ratingElementKey: ''
+ratingElementRegex: ''
+videoSrcElementsKey: ''
+videoSrcElementsRegex: ''
+videoSrcElementAttrKey: ''
+personsSectionUrl: ''
+personListLastPageIndex: ''
+personListLastPageIndexSelector: ''
+personItemURLSelector: ''
+
