@@ -1,0 +1,11 @@
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Maven
+log/
+target/
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
