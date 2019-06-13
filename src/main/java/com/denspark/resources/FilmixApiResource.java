@@ -11,6 +11,7 @@ import com.denspark.core.video_parser.model.XLinkType;
 import com.denspark.core.video_parser.video_models.cinema.Film;
 import com.denspark.core.video_parser.video_models.cinema.Genre;
 import com.denspark.core.video_parser.video_models.cinema.Person;
+import com.denspark.db.ServiceData;
 import com.denspark.db.service.FilmixService;
 import com.google.common.annotations.VisibleForTesting;
 import io.dropwizard.jersey.errors.ErrorMessage;
@@ -326,5 +327,13 @@ public class FilmixApiResource {
         return "Persist is done";
     }
 
-
+    @GET
+    @Path("/get_db_state")
+    public Response getDBstate() {
+        Integer maxId = filmixService.getMaxId();
+        Long moviesCount = filmixService.getMoviesCount();
+        ServiceData serviceData = new ServiceData(maxId,moviesCount);
+        Response response = Response.ok(serviceData).build();
+        return response;
+    }
 }

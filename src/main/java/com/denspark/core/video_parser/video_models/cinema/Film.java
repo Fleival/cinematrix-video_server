@@ -26,6 +26,16 @@ import java.util.Set;
                 @NamedQuery(
                         name = "com.denspark.core.video_parser.video_models.cinema.Film.getAllId",
                         query = "SELECT f.id FROM Film f"
+                ),
+
+                @NamedQuery(
+                        name = "com.denspark.core.video_parser.video_models.cinema.Film.getMaxID",
+                        query = "SELECT MAX(f.id) AS max_id FROM Film f"
+                ),
+
+                @NamedQuery(
+                        name = "com.denspark.core.video_parser.video_models.cinema.Film.getMoviesCount",
+                        query = "SELECT COUNT(*) AS movies_count FROM Film f"
                 )
         }
 )

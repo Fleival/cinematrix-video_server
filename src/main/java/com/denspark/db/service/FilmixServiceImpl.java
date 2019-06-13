@@ -260,4 +260,15 @@ public class FilmixServiceImpl implements FilmixService {
         );
         return persons;
     }
+
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override public Integer getMaxId() {
+        return filmixFilmDao.getMaxId();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override public Long getMoviesCount() {
+        return filmixFilmDao.getMoviesCount();
+    }
 }

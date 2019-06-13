@@ -45,4 +45,8 @@ public interface FilmixService {
     Film buildFilmAndPersist(Film film);
 
     Person buildPersonAndPersist(Person person);
+
+    Integer getMaxId();
+
+    Long getMoviesCount();;
 }
