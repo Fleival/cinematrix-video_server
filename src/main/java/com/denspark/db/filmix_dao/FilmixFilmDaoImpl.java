@@ -2,6 +2,7 @@ package com.denspark.db.filmix_dao;
 
 import com.denspark.core.video_parser.video_models.cinema.Film;
 import com.denspark.db.abstract_dao.CinemaCommonDao;
+import org.hibernate.query.Query;
 import org.hibernate.type.Type;
 import org.springframework.stereotype.Repository;
 
@@ -39,5 +40,14 @@ public class FilmixFilmDaoImpl extends CinemaCommonDao<Film> implements FilmixFi
         return currentSession()
                 .createNamedQuery("com.denspark.core.video_parser.video_models.cinema.Film.getMoviesCount", Long.class)
                 .getSingleResult();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override public List<Film> getAllSpecific(String query, int start, int maxRows) {
+        Query q = currentSession()
+                .createQuery(query, Film.class);
+        q.setFirstResult(start);
+        q.setMaxResults(maxRows);
+        return q.list();
     }
 }

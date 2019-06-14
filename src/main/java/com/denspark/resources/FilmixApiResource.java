@@ -89,7 +89,7 @@ public class FilmixApiResource {
     public Response getFilm(@PathParam("id") int id) {
         Film f = filmixService.findFilmById(id);
         Response response = Response.ok(f).build();
-       return response;
+        return response;
     }
 
     @GET
@@ -112,6 +112,14 @@ public class FilmixApiResource {
     @Path("/get_films")
     public Response getSpecFilms(@QueryParam("query") String query) {
         List<Film> films = filmixService.getSpecificFilms(query);
+
+        return Response.ok(films).build();
+    }
+
+    @GET
+    @Path("/get_ex_films")
+    public Response getSpecFilms(@QueryParam("query") String query, @QueryParam("start") int start, @QueryParam("maxRows") int maxRows) {
+        List<Film> films = filmixService.getSpecificFilms(query, start, maxRows);
 
         return Response.ok(films).build();
     }
@@ -216,7 +224,7 @@ public class FilmixApiResource {
 
     @GET
     @Path("/parse_async_persons")
-    public String parseAsyncPersons(@QueryParam("threads") int i, @QueryParam("start") boolean start,@QueryParam("split") int splitListSize) {
+    public String parseAsyncPersons(@QueryParam("threads") int i, @QueryParam("start") boolean start, @QueryParam("split") int splitListSize) {
         String siteName = "Filmix";
         XLinkType type = XLinkType.fromString("PERSON_LINKS");
 
@@ -332,7 +340,7 @@ public class FilmixApiResource {
     public Response getDBstate() {
         Integer maxId = filmixService.getMaxId();
         Long moviesCount = filmixService.getMoviesCount();
-        ServiceData serviceData = new ServiceData(maxId,moviesCount);
+        ServiceData serviceData = new ServiceData(maxId, moviesCount);
         Response response = Response.ok(serviceData).build();
         return response;
     }

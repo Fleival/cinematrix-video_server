@@ -26,6 +26,8 @@ public interface FilmixService {
 
     List<Film> getSpecificFilms(String hibQuery);
 
+    List<Film> getSpecificFilms(String hibQuery, int start, int maxRows );
+
     List<Person> getSpecificPersons(String hibQuery);
 
     List<Person> getAllPersons();

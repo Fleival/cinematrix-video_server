@@ -271,4 +271,28 @@ public class FilmixServiceImpl implements FilmixService {
     @Override public Long getMoviesCount() {
         return filmixFilmDao.getMoviesCount();
     }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override public List<Film> getSpecificFilms(String hibQuery, int start, int maxRows) {
+        List<Film> films = filmixFilmDao.getAllSpecific(hibQuery,start,maxRows);
+        films.forEach(
+                film -> {
+                    Hibernate.initialize(film.getGenres());
+                    Hibernate.initialize(film.getActors());
+                    film.setActorsId(
+                            film.getActors()
+                                    .stream()
+                                    .map(actor -> actor.getId())
+                                    .collect(Collectors.toSet())
+                    );
+                    film.setGenresId(
+                            film.getGenres()
+                                    .stream()
+                                    .map(genre -> genre.getId())
+                                    .collect(Collectors.toSet())
+                    );
+                }
+        );
+        return films;
+    }
 }
