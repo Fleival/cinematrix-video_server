@@ -2,7 +2,7 @@
 
 <br>
 
-[![Starting Cinematrix Server](https://img.youtube.com/vi/0MnbAeajM9A/0.jpg)](https://www.youtube.com/watch?v=0MnbAeajM9A "Starting Cinematrix Server - Click to Watch!")
+[![Starting Cinematrix Server](https://github.com/Fleival/cinematrix-video_server/blob/master/Gif_preview/CinematrixApp-2.gif)](https://www.youtube.com/watch?v=0MnbAeajM9A "Starting Cinematrix Server - Click to Watch!")
 
 <br>
 
