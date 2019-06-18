@@ -1,6 +1,7 @@
 # **Cinematrix video server**
 
 <br>
+
 ![alt text][screen_1]
 
 [screen_1]: https://github.com/Fleival/cinematrix-video_server/blob/master/GIF/CinematrixApp-2.gif 
