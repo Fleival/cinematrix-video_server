@@ -4,7 +4,7 @@
 
 ![alt text][screen_1]
 
-[screen_1]: https://github.com/Fleival/cinematrix-video_server/blob/master/GIF/CinematrixApp-2.gif 
+[screen_1]: https://github.com/Fleival/cinematrix-video_server/blob/master/Gif_preview/CinematrixApp-2.gif 
 
 -   implemented on the Dropwizard framework and runs in the Jetty servlet
     container;
