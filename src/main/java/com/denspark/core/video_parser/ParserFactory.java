@@ -1,6 +1,6 @@
 package com.denspark.core.video_parser;
 
-import com.denspark.CinematrixVideoConfiguration;
+import com.denspark.config.CinematrixVideoConfiguration;
 import com.denspark.core.video_parser.article_parser.ArticleParser;
 import com.denspark.core.video_parser.article_parser.impls.FilmixArticleParser;
 import com.denspark.core.video_parser.link_parser.LinkParser;

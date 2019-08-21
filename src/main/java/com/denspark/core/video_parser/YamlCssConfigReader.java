@@ -4,6 +4,8 @@ import com.denspark.core.video_parser.model.SiteCss;
 import com.denspark.utils.file_path_utils.FilePathUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
@@ -18,11 +20,11 @@ import java.util.List;
 public class YamlCssConfigReader {
     private static volatile YamlCssConfigReader instance;
     private File configFile;
-    private long lastModified;
-    private boolean needToReInit;
     private List<SiteCss> siteCssList;
     private String configPath;
     private FilePathUtils filePathUtils;
+
+    private static final Logger logger = LoggerFactory.getLogger(YamlCssConfigReader.class);
 
     private YamlCssConfigReader() {
         //no instance
@@ -54,51 +56,39 @@ public class YamlCssConfigReader {
         return localInstanceWithPath;
     }
 
-    private boolean initConfigFile() {
-        long lastModified;
+    private void initConfigFile() {
         filePathUtils = FilePathUtils.getInstance();
         configFile = new File(filePathUtils.getFullPath(configPath, true));
-
-        if (configFile.exists() && !configFile.isDirectory()) {
-            lastModified = configFile.lastModified();
-            if (lastModified > this.lastModified) {
-                this.lastModified = configFile.lastModified();
-                needToReInit = true;
-            } else {
-                needToReInit = false;
-            }
-        }
-        return needToReInit;
+        logger.info("configFile: " + configFile);
     }
 
 
     private void initSiteList() throws Exception {
-        if (needToReInit) {
-            List<String> yamlLineCollection = new ArrayList<>();
-            if (configFile.exists() && !configFile.isDirectory()) {
+        List<String> yamlLineCollection = new ArrayList<>();
+        if (configFile.exists() && !configFile.isDirectory()) {
 //                System.out.println("File exist: " + configFile.getName() + " : " + configFile.getAbsolutePath());
 
-                InputStream input = new FileInputStream(configFile);
-                Yaml yaml = new Yaml(new SafeConstructor());
+            InputStream input = new FileInputStream(configFile);
+            Yaml yaml = new Yaml(new SafeConstructor());
 
-                for (Object data : yaml.loadAll(input)) {
+            for (Object data : yaml.loadAll(input)) {
 //                    System.out.println(data);
-                    yamlLineCollection.add(yaml.dump(data));
-                }
-                input.close();
-                if (this.siteCssList == null) {
-                    this.siteCssList = new ArrayList<>();
-                }
-                for (String s : yamlLineCollection) {
-                    try {
-                        this.siteCssList.add(getSiteMappedToYaml(s));
+                yamlLineCollection.add(yaml.dump(data));
+            }
+            input.close();
+//                if (this.siteCssList == null) {
+//                }
+            this.siteCssList = new ArrayList<>();
+            for (String s : yamlLineCollection) {
+                try {
+                    this.siteCssList.add(getSiteMappedToYaml(s));
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
+
     }
 
     private SiteCss getSiteMappedToYaml(Object yamlData) throws IOException {
@@ -119,7 +109,7 @@ public class YamlCssConfigReader {
         return siteCss;
     }
 
-     SiteCss getSiteByName(String name) {
+    SiteCss getSiteByName(String name) {
         SiteCss target = null;
         for (SiteCss siteCss : siteCssList) {
             if (siteCss.getName().equalsIgnoreCase(name)) {

@@ -1,6 +1,6 @@
 package com.denspark.resources;
 
-import com.denspark.CinematrixVideoConfiguration;
+import com.denspark.config.CinematrixVideoConfiguration;
 import com.denspark.core.experiments.db.EntityTester;
 import com.denspark.core.experiments.db.MtDbWriter;
 import com.denspark.core.video_parser.Parser;
@@ -26,10 +26,11 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.regex.PatternSyntaxException;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-@Path("/test_spring")
+@Path("/filmix")
 @Consumes(APPLICATION_JSON)
 @Produces(APPLICATION_JSON)
 public class FilmixApiResource {
@@ -74,6 +75,7 @@ public class FilmixApiResource {
         dbWriter.starExecutor();
     }
 
+
     @GET
     @Path("/genre/{id}")
     public Response getGenre(@PathParam("id") int id) {
@@ -85,10 +87,25 @@ public class FilmixApiResource {
     }
 
     @GET
+    @Path("/load_genres")
+    public Response loadGenres() {
+        List<Genre> genres = filmixService.getAllGenres();
+        return Response.ok(genres).build();
+    }
+
+    @GET
     @Path("/film/{id}")
     public Response getFilm(@PathParam("id") int id) {
         Film f = filmixService.findFilmById(id);
         Response response = Response.ok(f).build();
+        return response;
+    }
+
+    @GET
+    @Path("/search_films")
+    public Response getFilm(@QueryParam("search") String search, @QueryParam("page") int page, @QueryParam("maxResult") int maxResult) {
+        List<Film> films = filmixService.searchFilmLike(search, page, maxResult);
+        Response response = Response.ok(films).build();
         return response;
     }
 
@@ -118,8 +135,16 @@ public class FilmixApiResource {
 
     @GET
     @Path("/get_ex_films")
-    public Response getSpecFilms(@QueryParam("query") String query, @QueryParam("start") int start, @QueryParam("maxRows") int maxRows) {
-        List<Film> films = filmixService.getSpecificFilms(query, start, maxRows);
+    public Response getSpecFilms(@QueryParam("query") String query, @QueryParam("page") int page, @QueryParam("maxResult") int maxResult) {
+        List<Film> films = filmixService.getSpecificFilms(query, page, maxResult);
+
+        return Response.ok(films).build();
+    }
+
+    @GET
+    @Path("/films")
+    public Response getPagedFilms(@QueryParam("page") int page, @QueryParam("maxResult") int maxResult) {
+        List<Film> films = filmixService.getPagedFilms(page, maxResult);
 
         return Response.ok(films).build();
     }
@@ -343,5 +368,36 @@ public class FilmixApiResource {
         ServiceData serviceData = new ServiceData(maxId, moviesCount);
         Response response = Response.ok(serviceData).build();
         return response;
+    }
+
+
+    @GET
+    @Path("/filtered_film_search")
+    public Response searchFilm(
+            @QueryParam("search") String searchName,
+            @QueryParam("year") String year,
+            @QueryParam("country") String country,
+            @QueryParam("genres") String genres,
+            @QueryParam("page") int page,
+            @QueryParam("maxResult") int maxResult) {
+
+        String[] splitArray = null;
+        try {
+            if (genres != null) {
+                splitArray = genres.split("((?:\\*))");
+            }
+        } catch (PatternSyntaxException ex) {
+            // Syntax error in the regular expression
+        }
+        List<Film> films = filmixService.searchFilmLike(searchName, year, country, splitArray, page, maxResult);
+        Response response = Response.ok(films).build();
+        return response;
+    }
+
+    @GET
+    @Path("/countries")
+    public Response getCountryList(){
+        List<String> countryList = filmixService.getCountryList();
+        return Response.ok(countryList).build();
     }
 }

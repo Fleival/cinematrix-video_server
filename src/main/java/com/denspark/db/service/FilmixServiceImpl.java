@@ -8,6 +8,7 @@ import com.denspark.db.filmix_dao.FilmixGenreDao;
 import com.denspark.db.filmix_dao.FilmixPersonDao;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -272,9 +273,10 @@ public class FilmixServiceImpl implements FilmixService {
         return filmixFilmDao.getMoviesCount();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
-    @Override public List<Film> getSpecificFilms(String hibQuery, int start, int maxRows) {
-        List<Film> films = filmixFilmDao.getAllSpecific(hibQuery,start,maxRows);
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Cacheable(value = "ehcache")
+    @Override public List<Film> getSpecificFilms(String hibQuery, int page, int maxResult) {
+        List<Film> films = filmixFilmDao.getAllSpecific(hibQuery,page,maxResult);
         films.forEach(
                 film -> {
                     Hibernate.initialize(film.getGenres());
@@ -295,4 +297,79 @@ public class FilmixServiceImpl implements FilmixService {
         );
         return films;
     }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Cacheable(value = "pagedFilms")
+    @Override public List<Film> getPagedFilms(int page, int maxResult) {
+        List<Film> films = filmixFilmDao.getPagedFilms(page,maxResult);
+        films.forEach(
+                film -> {
+                    Hibernate.initialize(film.getGenres());
+                    film.setGenresId(
+                            film.getGenres()
+                                    .stream()
+                                    .map(genre -> genre.getId())
+                                    .collect(Collectors.toSet())
+                    );
+//                    Hibernate.initialize(film.getActors());
+//                    film.setActorsId(
+//                            film.getActors()
+//                                    .stream()
+//                                    .map(actor -> actor.getId())
+//                                    .collect(Collectors.toSet())
+//                    );
+                }
+        );
+        return films;
+    }
+
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Cacheable(value = "pagedFilms")
+    @Override public List<Film> searchFilmLike(String search, int page, int maxResult){
+        search = "%"+search+"%";
+        List<Film> films = filmixFilmDao.searchFilmLike(search, page, maxResult);
+        films.forEach(
+                film -> {
+                    Hibernate.initialize(film.getGenres());
+                    film.setGenresId(
+                            film.getGenres()
+                                    .stream()
+                                    .map(genre -> genre.getId())
+                                    .collect(Collectors.toSet())
+                    );
+                }
+        );
+        return films;
+
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Cacheable(value = "pagedFilms")
+    @Override
+    public List<Film> searchFilmLike(String searchName, String year, String country, String[] genres , int page, int maxResult){
+//        String[] genreS = new String[]{"комедия", "боевик"};
+        List<Film> films = filmixFilmDao.searchFilmLike(searchName, year, country, genres, page, maxResult);
+
+        films.forEach(
+                film -> {
+                    Hibernate.initialize(film.getGenres());
+                    film.setGenresId(
+                            film.getGenres()
+                                    .stream()
+                                    .map(genre -> genre.getId())
+                                    .collect(Collectors.toSet())
+                    );
+                }
+        );
+
+        return films;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Cacheable(value = "pagedFilms")
+    @Override public List<String> getCountryList() {
+        return filmixFilmDao.getCountryList();
+    }
 }
+

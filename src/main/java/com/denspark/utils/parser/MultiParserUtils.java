@@ -11,6 +11,9 @@ import java.io.File;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class MultiParserUtils {
     private static MultiParserUtils mInstance;
@@ -64,6 +67,30 @@ public class MultiParserUtils {
         for (XLink xLink : xLinks) {
             xLink.setId(i);
             i++;
+        }
+        VTD_XMLcreator xmLcreator = new VTD_XMLcreator(xmlReader.getInputXml());
+        xmLcreator.createXlinkXmlDoc(xLinks, itemLinksXmlFilename);
+    }
+    public void recountXlinksIdRegexp(String itemLinksXmlFilename) {
+        VTDXMLreader xmlReader = new VTDXMLreader();
+        Set<XLink> xLinks = xmlReader.getXlinkSetResult(filePathUtils.getFullPath(itemLinksXmlFilename,FILE_PATH_UTILS_DEBUG_MODE));
+        int i = 1;
+        for (XLink xLink : xLinks) {
+            String ResultString = null;
+            try {
+                Pattern regex = Pattern.compile("(?<=/)\\d+");
+                Matcher regexMatcher = regex.matcher(xLink.getUrl());
+                if (regexMatcher.find()) {
+                    ResultString = regexMatcher.group(0);
+                    xLink.setId(Integer.parseInt(ResultString));
+                    i++;
+                }
+            } catch (
+                    PatternSyntaxException ex) {
+                xLink.setId(i);
+                i++; // Syntax error in the regular expression
+            }
+
         }
         VTD_XMLcreator xmLcreator = new VTD_XMLcreator(xmlReader.getInputXml());
         xmLcreator.createXlinkXmlDoc(xLinks, itemLinksXmlFilename);

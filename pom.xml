@@ -10,12 +10,16 @@
 
     <groupId>com.denspark</groupId>
     <artifactId>cinematrix-video-app</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.1-alpha</version>
     <packaging>jar</packaging>
     <repositories>
         <repository>
             <id>sonatype-repo</id>
             <url>https://oss.sonatype.org/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>Gluon</id>
+            <url>http://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
         </repository>
     </repositories>
 
@@ -26,10 +30,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <dropwizard.version>2.0.0-rc1</dropwizard.version>
+        <dropwizard.version>2.0.0-rc3</dropwizard.version>
         <junit5.version>5.4.2</junit5.version>
         <spring.version>4.3.7.RELEASE</spring.version>
         <mysql.version>8.0.11</mysql.version>
+        <org.ehcache.version>3.4.0</org.ehcache.version>
+        <hibernate.version>5.4.3.Final</hibernate.version>
         <mainClass>com.denspark.CinematrixVideoApplication</mainClass>
 
         <!-- You'll probably want to remove this for your project. We're just using it here
@@ -123,12 +129,36 @@
 
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>${org.ehcache.version}</version>
         </dependency>
 
         <dependency>
@@ -169,29 +199,39 @@
             <artifactId>okhttp</artifactId>
             <version>3.14.1</version>
         </dependency>
-<!--        Lombok-->
+        <!--        Lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.8</version>
             <scope>provided</scope>
         </dependency>
+
+        <!--Sundial aka Quartz scheduler-->
+        <dependency>
+            <groupId>org.knowm</groupId>
+            <artifactId>dropwizard-sundial-denspark-mod</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+        </dependency>
+
         <!--  Java 11 XML bind FIX-->
         <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
             <version>1.3.2</version>
         </dependency>
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.4.0-b180830.0359</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jaxb</groupId>
-            <artifactId>jaxb-runtime</artifactId>
-            <version>2.4.0-b180830.0438</version>
-        </dependency>
+
+        <!--        //Commented dependencies,I suppose bug fixed in new Dropwizard//-->
+        <!--        <dependency>-->
+        <!--            <groupId>javax.xml.bind</groupId>-->
+        <!--            <artifactId>jaxb-api</artifactId>-->
+        <!--            <version>2.4.0-b180830.0359</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.glassfish.jaxb</groupId>-->
+        <!--            <artifactId>jaxb-runtime</artifactId>-->
+        <!--            <version>2.4.0-b180830.0438</version>-->
+        <!--        </dependency>-->
         <!--Testing frameworks-->
 
         <dependency>
@@ -246,6 +286,23 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>com.jfoenix</groupId>
+            <artifactId>jfoenix</artifactId>
+            <version>8.0.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.code</groupId>
+            <artifactId>combinator</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.12</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -308,9 +365,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <!--                    <source>1.8</source>-->
-                    <!--                    <target>1.8</target>-->
-                    <release>11</release>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <!--                    <release>11</release>-->
                 </configuration>
             </plugin>
             <plugin>
@@ -329,6 +386,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
+                    <doclint>none</doclint>
                     <sourcepath>src/main/java</sourcepath>
                 </configuration>
                 <executions>
@@ -339,6 +397,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.zenjava</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>8.9.0-SNAPSHOT</version>
+                <configuration>
+                    <mainClass>com.denspark.gui.App</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>

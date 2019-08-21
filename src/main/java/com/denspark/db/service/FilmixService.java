@@ -28,6 +28,8 @@ public interface FilmixService {
 
     List<Film> getSpecificFilms(String hibQuery, int start, int maxRows );
 
+    List<Film> getPagedFilms(int page, int maxResult);
+
     List<Person> getSpecificPersons(String hibQuery);
 
     List<Person> getAllPersons();
@@ -50,5 +52,11 @@ public interface FilmixService {
 
     Integer getMaxId();
 
-    Long getMoviesCount();;
+    Long getMoviesCount();
+
+    List<Film> searchFilmLike(String search, int page, int maxResult);
+
+    List<Film> searchFilmLike(String searchName, String year, String country, String[] genres , int page, int maxResult);
+
+    List<String> getCountryList ();
 }

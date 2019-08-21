@@ -3,6 +3,8 @@ package com.denspark.core.video_parser.video_models.cinema;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -39,7 +41,6 @@ import java.util.Set;
                 )
         }
 )
-//@Cache(usage= CacheConcurrencyStrategy.READ_WRITE, region="film")
 public class Film implements FilmixCommonEntity,CinemaEntity, com.denspark.core.video_parser.model.Film {
     @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,7 +55,7 @@ public class Film implements FilmixCommonEntity,CinemaEntity, com.denspark.core.
     @Column(name = "upload_date")
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat
-            (shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+            (shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss.S", timezone = "Europe/Moscow")
     private Date uploadDate;
     @Column(name = "description_story")
     @Type(type = "text")

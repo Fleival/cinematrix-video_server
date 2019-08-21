@@ -1,6 +1,6 @@
 package com.denspark.core.video_parser.link_parser.impls;
 
-import com.denspark.CinematrixVideoConfiguration;
+import com.denspark.config.CinematrixVideoConfiguration;
 import com.denspark.core.video_parser.model.Link;
 import com.denspark.core.video_parser.model.XLinkType;
 import com.denspark.core.video_parser.link_parser.LinkGrabber;
@@ -49,5 +49,18 @@ public class FilmixLinkParser extends LinkParser {
     @Override
     protected void stopInstance() {
         mInstance=null;
+    }
+
+    protected void recountXlinkId(XLinkType type) {
+        switch (type) {
+            case FILM_LINKS: {
+                multiParserUtils.recountXlinksIdRegexp(xLinkXmlFilename);
+            }
+            break;
+            case PERSON_LINKS: {
+                multiParserUtils.recountXlinksId(xLinkXmlFilename);
+            }
+            break;
+        }
     }
 }

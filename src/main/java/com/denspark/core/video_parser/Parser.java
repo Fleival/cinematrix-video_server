@@ -1,6 +1,6 @@
 package com.denspark.core.video_parser;
 
-import com.denspark.CinematrixVideoConfiguration;
+import com.denspark.config.CinematrixVideoConfiguration;
 import com.denspark.core.video_parser.model.SiteCss;
 import com.denspark.core.video_parser.model.XLinkType;
 import com.denspark.utils.parser.MultiParserUtils;

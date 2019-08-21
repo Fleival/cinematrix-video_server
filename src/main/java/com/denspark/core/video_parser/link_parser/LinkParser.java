@@ -1,6 +1,6 @@
 package com.denspark.core.video_parser.link_parser;
 
-import com.denspark.CinematrixVideoConfiguration;
+import com.denspark.config.CinematrixVideoConfiguration;
 import com.denspark.core.video_parser.model.Link;
 import com.denspark.core.video_parser.model.SiteCss;
 import com.denspark.core.video_parser.model.XLink;
@@ -9,7 +9,6 @@ import com.denspark.core.video_parser.Parser;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.time.StopWatch;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -44,8 +43,11 @@ public abstract class LinkParser extends Parser {
             xLinkSet = multiParserUtils.readXlinks(xLinkXmlFilename);
         }
 
+        // TODO: 25.06.2019 Need to update and add only new items
 //        Set<Link> trueLinkSet = linkSet.stream().filter(
 //                link -> !link.isProcessed()).collect(Collectors.toSet());
+
+
         Set<Link> trueLinkSet =linkSet;
 
         System.out.println(trueLinkSet.size());
@@ -73,7 +75,7 @@ public abstract class LinkParser extends Parser {
             }
         }
 
-        multiParserUtils.recountXlinksId(xLinkXmlFilename);
+        recountXlinkId(type);
         stopInstance();
     }
 
@@ -209,5 +211,7 @@ public abstract class LinkParser extends Parser {
     public void setLastPage(int lastPage) {
         this.lastPage = lastPage;
     }
+
+    protected abstract void recountXlinkId(XLinkType type);
 
 }

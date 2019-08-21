@@ -12,6 +12,7 @@ xlink_WORKING_FOLDER: xlink_dir/
 #  validationQuery: "/* MyApplication Health Check */ SELECT 42"
 #  properties:
 #    charSet: UTF-8
+
 database:
   driverClass: com.mysql.cj.jdbc.Driver
   user: streletsdy
@@ -26,17 +27,30 @@ database:
 server:
   applicationConnectors:
     - type: http
-      port: 8080
+      port: 8020
   adminConnectors:
     - type: http
-      port: 8081
+      port: 8021
 
+#SUNDIAL SCHEDULER CONFIGURATION
+sundial:
+  thread-pool-size: 10
+  shutdown-on-unload: true
+  start-delay-seconds: 0
+  start-scheduler-on-load: false
+  global-lock-on-load: false
+  annotated-jobs-package-name:
+  tasks: [startjob, stopjob, addjob, removejob, startschedulerpackage, startscheduler, stopscheduler, pausescheduler]
+
+#LOGGER CONFIGURATION
 logging:
   level: INFO
   loggers:
-    com.denspark.spring: DEBUG
-    org.hibernate.SQL: INFO
-    org.springframework.transaction: INFO
+    com.denspark.spring: INFO
+    org.hibernate.SQL: DEBUG
+   #org.hibernate.type.descriptor.sql: TRACE
+    org.springframework.transaction: DEBUG
+
 
   appenders:
     - type: console
