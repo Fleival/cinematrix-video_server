@@ -274,12 +274,38 @@ public class VTDXMLreader {
                             xLink.setUrl(value);
 //                        System.out.println("\turl  " + value);
                         }
+                        vtdNav.toElement(VTDNav.NEXT_SIBLING, "update_date");
+                        val = vtdNav.getText();
+                        if (val != -1) {
+                            String value = vtdNav.toNormalizedString(val);
+                            xLink.setUpdateDate(value);
+//                        System.out.println("\tin_database  " + value);
+                        }
                         vtdNav.toElement(VTDNav.NEXT_SIBLING, "in_database");
                         val = vtdNav.getText();
                         if (val != -1) {
                             String value = vtdNav.toNormalizedString(val);
                             xLink.setExistsInDb(Boolean.parseBoolean(value));
 //                        System.out.println("\tin_database  " + value);
+                        }
+                        vtdNav.toElement(VTDNav.NEXT_SIBLING, "need_to_update_record");
+                        val = vtdNav.getText();
+                        if (val != -1) {
+                            String value = vtdNav.toNormalizedString(val);
+                            xLink.setNeedToUpdateRecord(Boolean.parseBoolean(value));
+//                        System.out.println("\tin_database  " + value);
+                        }
+                        vtdNav.toElement(VTDNav.NEXT_SIBLING, "pos_rating");
+                        val = vtdNav.getText();
+                        if (val != -1) {
+                            String value = vtdNav.toNormalizedString(val);
+                            xLink.setPosRating(Integer.parseInt(value));
+                        }
+                        vtdNav.toElement(VTDNav.NEXT_SIBLING, "neg_rating");
+                        val = vtdNav.getText();
+                        if (val != -1) {
+                            String value = vtdNav.toNormalizedString(val);
+                            xLink.setNegRating(Integer.parseInt(value));
                         }
 
                         xLinks.add(xLink);

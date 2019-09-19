@@ -31,6 +31,7 @@ public class InitializeConfigAndUpdateMovieLinks extends Job {
                 "Filmix",
                 type,
                 1,
+                context,
                 configuration);
 
         logger.info("updateConfig started");
@@ -48,6 +49,7 @@ public class InitializeConfigAndUpdateMovieLinks extends Job {
                 siteName,
                 type,
                 threads,
+                context,
                 configuration);
         logger.info("LinkParser started");
         linkParser.setStartPage(linkParser.getSiteCss().getUrl());

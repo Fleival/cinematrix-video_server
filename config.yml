@@ -25,6 +25,11 @@ database:
 
 #SERVER CONFIGURATION
 server:
+  requestLog:
+    appenders:
+      - type: console
+        timeZone: system
+
   applicationConnectors:
     - type: http
       port: 8020
@@ -47,13 +52,14 @@ logging:
   level: INFO
   loggers:
     com.denspark.spring: INFO
-    org.hibernate.SQL: DEBUG
+    org.hibernate.SQL: INFO
    #org.hibernate.type.descriptor.sql: TRACE
-    org.springframework.transaction: DEBUG
+    org.springframework.transaction: INFO
 
 
   appenders:
     - type: console
+      timeZone: system
 
     - type: file
       threshold: INFO
@@ -61,5 +67,5 @@ logging:
       currentLogFilename: /tmp/application.log
       archivedLogFilenamePattern: /tmp/application-%d{yyyy-MM-dd}-%i.log.gz
       archivedFileCount: 7
-      timeZone: UTC
+      timeZone: system
       maxFileSize: 10MB

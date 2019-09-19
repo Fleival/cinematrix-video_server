@@ -14,6 +14,7 @@ public class SiteCss extends Site {
     @Getter @Setter private int articleListLastPageIndex;
     @Getter @Setter private String articleLastPageSelector;
     @Getter @Setter private String articleItemURLSelector;
+    @Getter @Setter private String articleItemSelector;
     @Getter @Setter private String serialListLastPageSelector;
     @Getter @Setter private String serialCategorySelector;
     @Getter @Setter private String serialListUrl;

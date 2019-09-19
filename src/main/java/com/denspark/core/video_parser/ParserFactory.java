@@ -25,21 +25,23 @@ public class ParserFactory {
         return mInstance;
     }
 
-    public Parser getFilmixParser(String siteName, XLinkType type, int THREAD_COUNT, CinematrixVideoConfiguration configuration) {
+    public Parser getFilmixParser(String siteName, XLinkType type, int THREAD_COUNT,ApplicationContext context, CinematrixVideoConfiguration configuration) {
         this.parser = FilmixLinkParser.getInstance(
                 siteName,
                 type,
-                THREAD_COUNT
-                , configuration);
+                THREAD_COUNT,
+                context,
+                configuration);
         parser.setStartPage(parser.getSiteCss().getPersonsSectionUrl());
         return parser;
     }
 
-    public LinkParser getFilmixLinkParser(String siteName, XLinkType type, int THREAD_COUNT, CinematrixVideoConfiguration configuration) {
+    public LinkParser getFilmixLinkParser(String siteName, XLinkType type, int THREAD_COUNT,ApplicationContext context,  CinematrixVideoConfiguration configuration) {
         this.linkParser = FilmixLinkParser.getInstance(
                 siteName,
                 type,
                 THREAD_COUNT,
+                context,
                 configuration);
 
         return linkParser;

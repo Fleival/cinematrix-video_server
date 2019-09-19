@@ -1,14 +1,8 @@
 package com.denspark.db.abstract_dao;
 
 import com.denspark.core.video_parser.video_models.cinema.FilmixCommonEntity;
-import io.dropwizard.util.Generics;
-import org.hibernate.Hibernate;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
@@ -23,85 +17,40 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.springframework.data.util.Optionals.ifPresentOrElse;
 
 
-public abstract class CinemaCommonDao< E extends FilmixCommonEntity>  {
+public abstract class CinemaCommonDao<E extends FilmixCommonEntity> extends CommonDao<E>  {
     private static final Logger LOGGER = LoggerFactory.getLogger(CinemaCommonDao.class);
 
-    private final Class<?> entityClass;
 
-    @Autowired
-    private SessionFactory sessionFactory;
-
-    public CinemaCommonDao() {
-        this.entityClass = Generics.getTypeParameter(this.getClass());
-    }
     @SuppressWarnings("unchecked")
-    public Class<E> getEntityClass() {
-        return (Class<E>) this.entityClass;
-    }
-
-    protected Session currentSession() {
-        return sessionFactory.getCurrentSession();
-    }
-
-    public E create(E entity) {
-        Session session = currentSession();
-//        System.out.println(session);
-        currentSession().saveOrUpdate(entity);
-        return entity;
-    }
-    public E createOrUpdate(E entity) {
-//        System.out.println(currentSession());
-        currentSession().saveOrUpdate(entity);
-        return entity;
-    }
-    public E mergeAndClear(E entity) {
-        Session session = currentSession();
-//        System.out.println(session);
-        session.merge(entity);
-
-        return entity;
-    }
-    @SuppressWarnings("unchecked")
-    protected List<E> getAll(String namedQuery){
-        return currentSession().createNamedQuery(namedQuery).getResultList();
-    }
-    @SuppressWarnings("unchecked")
-    protected List<E> getAllSpecific(String query){
-        return currentSession().createQuery(query).list();
-    }
-    @SuppressWarnings("unchecked")
-
-    protected List<Integer> getAllId(String namedQuery){
+    protected List<Object[]> getAllIdDateList(String namedQuery) {
         return currentSession().createNamedQuery(namedQuery).getResultList();
     }
 
-    public void flushSession(){
-        currentSession().flush();
-    }
+
 
     public Optional<E> findById(Integer id) {
-        E entity =  this.currentSession().get(getEntityClass(), Objects.requireNonNull(id));
-        return Optional.ofNullable(entity);
-    }
-    public Optional<E> loadById(Integer id) {
-        E entity =  this.currentSession().load(getEntityClass(), Objects.requireNonNull(id));
+        E entity = this.currentSession().get(getEntityClass(), Objects.requireNonNull(id));
         return Optional.ofNullable(entity);
     }
 
-    public void remove(E entity) {
-        currentSession().remove(entity);
+    public Optional<E> loadById(Integer id) {
+        E entity = this.currentSession().load(getEntityClass(), Objects.requireNonNull(id));
+        return Optional.ofNullable(entity);
     }
+
+
 
     public Optional<E> filterNameField(String name) {
         Query query = currentSession().createNamedQuery(getEntityClass().getName() + ".findByName");
         query.setParameter("name", name);
         return Optional.ofNullable(uniqueResult(query));
     }
+
     protected Optional<E> filterQuery(Query query) {
         return Optional.ofNullable(uniqueResult(query));
     }
 
-    public E createOrGetExist(E entity){
+    public E createOrGetExist(E entity) {
         return createOrGetExist("name", entity);
     }
 
@@ -138,10 +87,12 @@ public abstract class CinemaCommonDao< E extends FilmixCommonEntity>  {
         List<E> list = query.getResultList();
         return getEntity(list);
     }
+
     private E uniqueResult(CriteriaQuery<E> criteriaQuery) throws NonUniqueResultException {
         List<E> list = currentSession().createQuery(criteriaQuery).getResultList();
         return getEntity(list);
     }
+
     private E getEntity(List<E> list) {
         int size = list.size();
         if (size == 0) {

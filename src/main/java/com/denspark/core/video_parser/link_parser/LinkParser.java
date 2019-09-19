@@ -1,11 +1,11 @@
 package com.denspark.core.video_parser.link_parser;
 
 import com.denspark.config.CinematrixVideoConfiguration;
+import com.denspark.core.video_parser.Parser;
 import com.denspark.core.video_parser.model.Link;
 import com.denspark.core.video_parser.model.SiteCss;
 import com.denspark.core.video_parser.model.XLink;
 import com.denspark.core.video_parser.model.XLinkType;
-import com.denspark.core.video_parser.Parser;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.time.StopWatch;
 
@@ -48,7 +48,7 @@ public abstract class LinkParser extends Parser {
 //                link -> !link.isProcessed()).collect(Collectors.toSet());
 
 
-        Set<Link> trueLinkSet =linkSet;
+        Set<Link> trueLinkSet = linkSet;
 
         System.out.println(trueLinkSet.size());
         List<List<Link>> splitBigList = splitBigListIntoSmall(trueLinkSet, 200);
@@ -69,13 +69,13 @@ public abstract class LinkParser extends Parser {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }else{
+            } else {
                 writeOrUpdateLinks();
                 break;
             }
         }
 
-        recountXlinkId(type);
+//        saveResultToDB();
         stopInstance();
     }
 
@@ -212,6 +212,20 @@ public abstract class LinkParser extends Parser {
         this.lastPage = lastPage;
     }
 
-    protected abstract void recountXlinkId(XLinkType type);
+    public void saveResultToDB() {
+        switch (type) {
+            case FILM_LINKS: {
+                if (!(xLinkSet.isEmpty()))
+                    writeRatingToDB(xLinkSet);
+            }
+            break;
+            case PERSON_LINKS: {
+
+            }
+            break;
+        }
+    }
+
+    protected abstract void writeRatingToDB(Set<XLink> xLinks);
 
 }

@@ -1,11 +1,12 @@
 package com.denspark.db.service;
 
+import com.denspark.core.video_parser.model.XLink;
 import com.denspark.core.video_parser.video_models.cinema.Film;
 import com.denspark.core.video_parser.video_models.cinema.Genre;
 import com.denspark.core.video_parser.video_models.cinema.Person;
+import com.denspark.core.video_parser.video_models.cinema.Rating;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public interface FilmixService {
     Person createPerson(Person person);
@@ -13,6 +14,10 @@ public interface FilmixService {
     List<Integer> getAllPersonIdsInDb();
 
     List<Integer> getAllFilmIdsInDb();
+
+    Map<Integer, Date> getMapOfFilmIdUploadDate();
+
+    Map<Integer, Date> getMapOfPersonIdUploadDate();
 
     List<Genre> getAllGenres();
 
@@ -59,4 +64,16 @@ public interface FilmixService {
     List<Film> searchFilmLike(String searchName, String year, String country, String[] genres , int page, int maxResult);
 
     List<String> getCountryList ();
+
+    void saveRating(Set<XLink> xlinkSet);
+
+    Rating getRatingById(int id);
+
+    void updateRating(Set<XLink> xLinkSet);
+
+    List<Film> topFilms(int page, int maxResult);
+
+    List<Film> lastMovies(int page, int maxResult);
+
+    List<Film> lastTvSeries(int page, int maxResult);
 }

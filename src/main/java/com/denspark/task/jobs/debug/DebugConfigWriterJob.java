@@ -30,6 +30,7 @@ public class DebugConfigWriterJob extends Job {
                 "Filmix",
                 type,
                 1,
+                context,
                 configuration);
 
         logger.info("updateConfig started");

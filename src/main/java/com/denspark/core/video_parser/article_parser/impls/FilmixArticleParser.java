@@ -11,8 +11,10 @@ import com.denspark.core.video_parser.video_models.cinema.Person;
 import com.denspark.db.service.FilmixService;
 import org.springframework.context.ApplicationContext;
 
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -63,14 +65,14 @@ public class FilmixArticleParser extends ArticleParser {
     }
 
     @Override
-    protected List<Integer> getIdListOfExistingEntries() {
+    protected Map<Integer, Date> getIdDateMapOfExistingEntries() {
         switch (type) {
             case FILM_LINKS:
-                return filmixService.getAllFilmIdsInDb();
+                return filmixService.getMapOfFilmIdUploadDate();
             case PERSON_LINKS:
-                return filmixService.getAllPersonIdsInDb();
+                return filmixService.getMapOfPersonIdUploadDate();
         }
-        return new ArrayList<>();
+        return new HashMap<>();
     }
 
     public static FilmixArticleParser getInstance(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, int splitListSize, CinematrixVideoConfiguration configuration) {
@@ -143,5 +145,9 @@ public class FilmixArticleParser extends ArticleParser {
                 }
             }
         }
+    }
+
+    @Override protected void updateFilmsRating() {
+        filmixService.updateRating(xLinkSet);
     }
 }

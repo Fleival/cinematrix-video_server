@@ -1,9 +1,9 @@
 package com.denspark.core.video_parser.link_parser.impls;
 
+import com.denspark.core.video_parser.link_parser.LinkGrabber;
 import com.denspark.core.video_parser.model.Link;
 import com.denspark.core.video_parser.model.SiteCss;
 import com.denspark.core.video_parser.model.XLinkType;
-import com.denspark.core.video_parser.link_parser.LinkGrabber;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -16,7 +16,7 @@ public class FilmixLinkGrabber extends LinkGrabber {
 
     @Override
     protected void findPersonLinks(Document document) {
-        String cssQuery = siteCss.getArticleItemURLSelector();
+        String cssQuery = siteCss.getPersonItemURLSelector();
         Elements elements = document.select(cssQuery);
 
         elements.forEach(
@@ -26,7 +26,8 @@ public class FilmixLinkGrabber extends LinkGrabber {
 
     @Override
     protected void findFilmLinks(Document document) {
-        String cssQuery = siteCss.getPersonItemURLSelector();
+
+        String cssQuery = siteCss.getArticleItemSelector();
         Elements elements = document.select(cssQuery);
 
         elements.forEach(

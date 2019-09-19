@@ -313,7 +313,7 @@ public class FilmixArticleGrabber extends ArticleGrabber {
     private Person parsePerson(String url) {
         Connection targetConnection = Jsoup.connect(url);
         targetConnection.timeout(TIMEOUT);
-        XLink xLinkS = new XLink(personXLinkMapId.getAndIncrement(), XLinkType.PERSON_LINKS.toString(), url, false);
+        XLink xLinkS = new XLink(personXLinkMapId.getAndIncrement(), XLinkType.PERSON_LINKS.toString(), url, null, false,true);
         personXLinkMap.putIfAbsent(url, xLinkS);
         try {
             Document personPage = targetConnection.get();

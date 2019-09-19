@@ -1,11 +1,14 @@
 package com.denspark.db.service;
 
+import com.denspark.core.video_parser.model.XLink;
 import com.denspark.core.video_parser.video_models.cinema.Film;
 import com.denspark.core.video_parser.video_models.cinema.Genre;
 import com.denspark.core.video_parser.video_models.cinema.Person;
+import com.denspark.core.video_parser.video_models.cinema.Rating;
 import com.denspark.db.filmix_dao.FilmixFilmDao;
 import com.denspark.db.filmix_dao.FilmixGenreDao;
 import com.denspark.db.filmix_dao.FilmixPersonDao;
+import com.denspark.db.filmix_dao.FilmixRatingDao;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -13,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service("filmixService")
@@ -28,6 +28,8 @@ public class FilmixServiceImpl implements FilmixService {
     private FilmixGenreDao filmixGenreDao;
     @Autowired
     private FilmixFilmDao filmixFilmDao;
+    @Autowired
+    private FilmixRatingDao filmixRatingDao;
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
@@ -57,6 +59,25 @@ public class FilmixServiceImpl implements FilmixService {
     @Override
     public List<Integer> getAllFilmIdsInDb() {
         return filmixFilmDao.getAllIdsInDb();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Override
+    public Map<Integer, Date> getMapOfPersonIdUploadDate() {
+        List<Integer> personIdList = filmixPersonDao.getAllIdsInDb();
+        Map<Integer, Date> resultMap = new HashMap<>();
+        personIdList.forEach(
+                id -> {
+                    resultMap.put(id, null);
+                }
+        );
+        return resultMap;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Override
+    public Map<Integer, Date> getMapOfFilmIdUploadDate() {
+        return filmixFilmDao.getIdDateMap();
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -276,7 +297,7 @@ public class FilmixServiceImpl implements FilmixService {
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     @Cacheable(value = "ehcache")
     @Override public List<Film> getSpecificFilms(String hibQuery, int page, int maxResult) {
-        List<Film> films = filmixFilmDao.getAllSpecific(hibQuery,page,maxResult);
+        List<Film> films = filmixFilmDao.getAllSpecific(hibQuery, page, maxResult);
         films.forEach(
                 film -> {
                     Hibernate.initialize(film.getGenres());
@@ -301,7 +322,7 @@ public class FilmixServiceImpl implements FilmixService {
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     @Cacheable(value = "pagedFilms")
     @Override public List<Film> getPagedFilms(int page, int maxResult) {
-        List<Film> films = filmixFilmDao.getPagedFilms(page,maxResult);
+        List<Film> films = filmixFilmDao.getPagedFilms(page, maxResult);
         films.forEach(
                 film -> {
                     Hibernate.initialize(film.getGenres());
@@ -326,8 +347,8 @@ public class FilmixServiceImpl implements FilmixService {
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     @Cacheable(value = "pagedFilms")
-    @Override public List<Film> searchFilmLike(String search, int page, int maxResult){
-        search = "%"+search+"%";
+    @Override public List<Film> searchFilmLike(String search, int page, int maxResult) {
+        search = "%" + search + "%";
         List<Film> films = filmixFilmDao.searchFilmLike(search, page, maxResult);
         films.forEach(
                 film -> {
@@ -347,7 +368,7 @@ public class FilmixServiceImpl implements FilmixService {
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     @Cacheable(value = "pagedFilms")
     @Override
-    public List<Film> searchFilmLike(String searchName, String year, String country, String[] genres , int page, int maxResult){
+    public List<Film> searchFilmLike(String searchName, String year, String country, String[] genres, int page, int maxResult) {
 //        String[] genreS = new String[]{"комедия", "боевик"};
         List<Film> films = filmixFilmDao.searchFilmLike(searchName, year, country, genres, page, maxResult);
 
@@ -370,6 +391,45 @@ public class FilmixServiceImpl implements FilmixService {
     @Cacheable(value = "pagedFilms")
     @Override public List<String> getCountryList() {
         return filmixFilmDao.getCountryList();
+    }
+
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Override
+    public void saveRating(Set<XLink> xLinkSet) {
+        xLinkSet.forEach(
+                xLink -> {
+                    Rating rating = new Rating(xLink.getId(), xLink.getPosRating(), xLink.getNegRating());
+                    filmixRatingDao.createOrUpdate(rating);
+                }
+        );
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Override public Rating getRatingById(int id) {
+        Rating r = filmixRatingDao.findById(id).get();
+        return r;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Override public void updateRating(Set<XLink> xLinkSet) {
+        xLinkSet.forEach(
+                xLink -> filmixFilmDao.updateRating(xLink.getId(), xLink.getPosRating(), xLink.getNegRating()));
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Override public List<Film> topFilms(int page, int maxResult) {
+        return filmixFilmDao.topFilms(page ,maxResult);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Override public List<Film> lastMovies(int page, int maxResult) {
+        return filmixFilmDao.lastMovies(page ,maxResult);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Override public List<Film> lastTvSeries(int page, int maxResult) {
+        return filmixFilmDao.lastTvSeries(page ,maxResult);
     }
 }
 

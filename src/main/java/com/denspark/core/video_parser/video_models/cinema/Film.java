@@ -3,8 +3,6 @@ package com.denspark.core.video_parser.video_models.cinema;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -38,10 +36,15 @@ import java.util.Set;
                 @NamedQuery(
                         name = "com.denspark.core.video_parser.video_models.cinema.Film.getMoviesCount",
                         query = "SELECT COUNT(*) AS movies_count FROM Film f"
+                ),
+
+                @NamedQuery(
+                        name = "com.denspark.core.video_parser.video_models.cinema.Film.getIdAndDate",
+                        query = " select f.id, f.uploadDate from Film f"
                 )
         }
 )
-public class Film implements FilmixCommonEntity,CinemaEntity, com.denspark.core.video_parser.model.Film {
+public class Film implements FilmixCommonEntity, CinemaEntity, com.denspark.core.video_parser.model.Film {
     @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -69,6 +72,12 @@ public class Film implements FilmixCommonEntity,CinemaEntity, com.denspark.core.
             inverseJoinColumns = {@JoinColumn(name = "person_id", referencedColumnName = "ID")}
     )
     private Set<Person> actors;
+
+    @Column(name = "positive_rating")
+    private int posRating;
+
+    @Column(name = "negative_rating")
+    private int negRating;
 
     @Transient
     @JsonInclude
@@ -238,6 +247,22 @@ public class Film implements FilmixCommonEntity,CinemaEntity, com.denspark.core.
 
     public void setGenresId(Set<Integer> genresId) {
         this.genresId = genresId;
+    }
+
+    public int getPosRating() {
+        return posRating;
+    }
+
+    public void setPosRating(int posRating) {
+        this.posRating = posRating;
+    }
+
+    public int getNegRating() {
+        return negRating;
+    }
+
+    public void setNegRating(int negRating) {
+        this.negRating = negRating;
     }
 
     @Override

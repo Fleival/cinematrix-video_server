@@ -71,9 +71,40 @@ public abstract class LinkGrabber implements Supplier<LinkGrabber> {
 
     protected XLink createXlink(Element element) {
         XLink xLink = new XLink();
-        xLink.setType(type.toString());
-        xLink.setUrl(element.attr("href"));
-        xLink.setExistsInDb(false);
+        switch (type) {
+            case PERSON_LINKS: {
+                String id = element.selectFirst("a > span > span").attr("data-id");
+                xLink.setId(Integer.parseInt(id));
+                xLink.setType(type.toString());
+                xLink.setUrl(element.attr("href"));
+                xLink.setUpdateDate(null);
+                xLink.setExistsInDb(false);
+                xLink.setNeedToUpdateRecord(true);
+            }
+            break;
+            case FILM_LINKS: {
+                String url = element.selectFirst("div.short > a").attr("href");
+                String id = element.attr("data-id");
+                String dateS = element.selectFirst("div.full > div.top-date > div.block-date > time").attr("datetime");
+
+                String likes = element.selectFirst("span.hand-up.icon-like > span").text();
+                String dislikes = element.selectFirst("span.hand-down.icon-dislike > span").text();
+
+
+                xLink.setType(type.toString());
+                xLink.setUrl(url);
+                xLink.setUpdateDate(dateS);
+                xLink.setId(Integer.parseInt(id));
+                xLink.setExistsInDb(false);
+                xLink.setNeedToUpdateRecord(true);
+                xLink.setPosRating(Integer.parseInt(likes));
+                xLink.setNegRating(Integer.parseInt(dislikes));
+
+//                System.out.println(xLink.getUrl() + xLink.getId() + xLink.getUpdateDateObj() + likes + dislikes);
+
+            }
+            break;
+        }
         return xLink;
     }
 

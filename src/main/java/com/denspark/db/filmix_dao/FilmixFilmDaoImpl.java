@@ -7,9 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Repository("filmixFilmDao")
 public class FilmixFilmDaoImpl extends CinemaCommonDao<Film> implements FilmixFilmDao {
@@ -23,6 +21,18 @@ public class FilmixFilmDaoImpl extends CinemaCommonDao<Film> implements FilmixFi
     @Override
     public List<Integer> getAllIdsInDb() {
         return super.getAllId("com.denspark.core.video_parser.video_models.cinema.Film.getAllId");
+    }
+
+    @Override
+    public Map<Integer, Date> getIdDateMap() {
+        List<Object[]> objectsList = super.getAllIdDateList("com.denspark.core.video_parser.video_models.cinema.Film.getIdAndDate");
+        HashMap<Integer, Date> maps = new HashMap<>();
+        for (Object[] ob : objectsList) {
+            Integer key = (Integer) ob[0];
+            Date value = (Date) ob[1];
+            maps.put(key, value);
+        }
+        return maps;
     }
 
     @Override
@@ -297,13 +307,79 @@ public class FilmixFilmDaoImpl extends CinemaCommonDao<Film> implements FilmixFi
 //    }
 
     @Override
-    public List<String> getCountryList (){
+    public List<String> getCountryList() {
         String sql = "SELECT DISTINCT f.country FROM films f WHERE f.country NOT LIKE '%,%' ORDER BY f.country ASC";
         Query query = currentSession().createNativeQuery(sql);
         List<String> resultList = query.getResultList();
         return resultList;
     }
 
+    @Override public void updateRating(int id, int pos, int neg) {
+        String hqlUpdateRating = "UPDATE Film set posRating = :pos, negRating= :neg where id = :id";
+        currentSession().createQuery(hqlUpdateRating)
+                .setParameter("id", id)
+                .setParameter("pos", pos)
+                .setParameter("neg", neg)
+                .executeUpdate();
+    }
 
+    @Override public List<Film> topFilms(int page, int maxResult) {
+        String sqlQuery = "SELECT STRAIGHT_JOIN  f.* " +
+                "FROM films f " +
+                "WHERE f.id NOT IN ( " +
+                "SELECT fg.film_id" +
+                " FROM films_genres fg" +
+                " WHERE fg.genre_id IN (10,21,23,27,28,29,30,31,33,34,37,38,39,40,42)" +
+                " GROUP BY fg.film_id\n" +
+                " ) " +
+                "ORDER BY f.positive_rating DESC  ";
+
+        Query query = currentSession().createNativeQuery(sqlQuery, Film.class);
+        final int pageIndex = page - 1 < 0 ? 0 : page - 1;
+        int fromRecordIndex = pageIndex * maxResult;
+        query.setFirstResult(fromRecordIndex);
+        query.setMaxResults(maxResult);
+        List<Film> resultList = query.getResultList();
+        return resultList;
+    }
+
+    @Override public List<Film> lastMovies(int page, int maxResult) {
+        String sqlQuery = "SELECT STRAIGHT_JOIN  f.* " +
+                "FROM films f " +
+                "WHERE f.id NOT IN ( " +
+                "SELECT fg.film_id" +
+                " FROM films_genres fg" +
+                " WHERE fg.genre_id IN (10,21,23,27,28,29,30,31,33,34,37,38,39,40,42)" +
+                " GROUP BY fg.film_id\n" +
+                " ) " +
+                "ORDER BY f.upload_date DESC  ";
+
+        Query query = currentSession().createNativeQuery(sqlQuery, Film.class);
+        final int pageIndex = page - 1 < 0 ? 0 : page - 1;
+        int fromRecordIndex = pageIndex * maxResult;
+        query.setFirstResult(fromRecordIndex);
+        query.setMaxResults(maxResult);
+        List<Film> resultList = query.getResultList();
+        return resultList;
+    }
+
+    @Override public List<Film> lastTvSeries(int page, int maxResult) {
+        String sqlQuery = "SELECT STRAIGHT_JOIN  f.* " +
+                "FROM films f " +
+                "WHERE f.id IN ( " +
+                "SELECT fg.film_id" +
+                " FROM films_genres fg" +
+                " WHERE fg.genre_id IN (34,42)" +
+                " GROUP BY fg.film_id\n" +
+                " ) " +
+                "ORDER BY f.upload_date DESC  ";
+
+        Query query = currentSession().createNativeQuery(sqlQuery, Film.class);
+        final int pageIndex = page - 1 < 0 ? 0 : page - 1;
+        int fromRecordIndex = pageIndex * maxResult;
+        query.setFirstResult(fromRecordIndex);
+        query.setMaxResults(maxResult);
+        List<Film> resultList = query.getResultList();
+        return resultList;
+    }
 }
-

@@ -8,10 +8,7 @@ import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.springframework.context.ApplicationContext;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -22,7 +19,7 @@ import java.util.stream.Collectors;
 
 public abstract class ArticleParser extends Parser {
     protected int splitListSize;
-    private Set<XLink> xLinkSet;
+    protected Set<XLink> xLinkSet;
     private Set<ArticleGrabber> articleGrabbers = new LinkedHashSet<>();
     private Set<ArticleGrabber> splitArticleGrabbers;
     // TODO: 02.05.2019 Generalize entity type
@@ -41,13 +38,22 @@ public abstract class ArticleParser extends Parser {
 
     public abstract void initDBMap();
 
-    protected abstract List<Integer> getIdListOfExistingEntries();
+    protected abstract Map<Integer, Date> getIdDateMapOfExistingEntries();
 
-    private void checkXlinks(List<Integer> ids) {
-        System.out.println("Comparing " + ids.size() + " id with loaded xLink set");
+    private void checkXlinks(Map<Integer, Date> idDateMap) {
+        System.out.println("Comparing id of " + idDateMap.size() + " items in database with id of " + xLinkSet.size() + " items in loaded xLink set");
         xLinkSet.forEach(
                 xLink -> {
-                    if (!ids.contains(xLink.getId())) {
+                    if (idDateMap.containsKey(xLink.getId())) {
+                        xLink.setExistsInDb(true);
+                        if (xLink.getUpdateDateObj() != null) {
+                            if (idDateMap.get(xLink.getId()).before(xLink.getUpdateDateObj())) {
+                                xLink.setNeedToUpdateRecord(true);
+                            } else {
+                                xLink.setNeedToUpdateRecord(false);
+                            }
+                        }
+                    } else {
                         xLink.setExistsInDb(false);
                     }
                 }
@@ -65,12 +71,18 @@ public abstract class ArticleParser extends Parser {
         }
         if (multiParserUtils.fileExist(multiParserUtils.getXlinkXMLfilename(XLinkType.PERSON_LINKS, "Filmix"))) {
             personXLinkMap = multiParserUtils.readXlinksToUrlMap(multiParserUtils.getXlinkXMLfilename(XLinkType.PERSON_LINKS, "Filmix"));
-            personXLinkMapId = new AtomicInteger(personXLinkMap.size());
+
         }
-        checkXlinks(getIdListOfExistingEntries());
+        int maxId =
+                xLinkSet.stream()
+                        .max(Comparator.comparing(XLink::getId))
+                        .orElseThrow(NoSuchElementException::new).getId();
+        personXLinkMapId = new AtomicInteger(maxId);
+
+        checkXlinks(getIdDateMapOfExistingEntries());
 
         Set<XLink> trueLinkSet = xLinkSet.stream().filter(
-                xLink -> (!(xLink.isExistsInDb()))
+                xLink -> ((!(xLink.isExistsInDb())) | (xLink.isNeedToUpdateRecord()))
         ).collect(Collectors.toSet());
 
         List<List<XLink>> splitBigList = splitBigListIntoSmall(trueLinkSet, splitListSize);
@@ -106,6 +118,7 @@ public abstract class ArticleParser extends Parser {
                 break;
             }
         }
+        updateFilmsRating();
         System.out.println("Grab complete");
 //        stopInstance();
         stopParser();
@@ -156,6 +169,7 @@ public abstract class ArticleParser extends Parser {
             e.printStackTrace();
             stopParser();
         } catch (NullPointerException npe) {
+            npe.printStackTrace();
             stopParser();
         }
         stopWatch.stop();
@@ -168,9 +182,18 @@ public abstract class ArticleParser extends Parser {
     protected abstract CompletableFuture<ArticleGrabber> parseXlink(XLink webPageXlink);
 
     protected boolean shouldVisit(XLink xLink) {
-        if (xLink.isExistsInDb()) {
-            return false;
+        switch (type) {
+            case FILM_LINKS: {
+            }
+            break;
+            case PERSON_LINKS: {
+                if (xLink.isExistsInDb()) {
+                    return false;
+                }
+            }
+            break;
         }
+
         if (xLink.getUrl().endsWith(".pdf")) {
             return false;
         }
@@ -185,6 +208,8 @@ public abstract class ArticleParser extends Parser {
         return splitedLinkList;
     }
 
+
+    protected abstract void updateFilmsRating();
 
     public void saveResultToDB() {
         switch (type) {

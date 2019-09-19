@@ -11,6 +11,7 @@ import com.denspark.core.video_parser.model.XLinkType;
 import com.denspark.core.video_parser.video_models.cinema.Film;
 import com.denspark.core.video_parser.video_models.cinema.Genre;
 import com.denspark.core.video_parser.video_models.cinema.Person;
+import com.denspark.core.video_parser.video_models.cinema.Rating;
 import com.denspark.db.ServiceData;
 import com.denspark.db.service.FilmixService;
 import com.google.common.annotations.VisibleForTesting;
@@ -23,7 +24,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.PatternSyntaxException;
@@ -173,6 +176,7 @@ public class FilmixApiResource {
                 "Filmix",
                 XLinkType.PERSON_LINKS,
                 1,
+                context,
                 configuration);
         parser.updateConfig();
     }
@@ -195,6 +199,7 @@ public class FilmixApiResource {
                 siteName,
                 type,
                 i,
+                context,
                 configuration);
 
         linkParser.setStartPage(linkParser.getSiteCss().getPersonsSectionUrl());
@@ -230,6 +235,7 @@ public class FilmixApiResource {
                 siteName,
                 type,
                 i,
+                context,
                 configuration);
         linkParser.setStartPage(linkParser.getSiteCss().getUrl());
         linkParser.setLastPage(linkParser.getSiteCss().getArticleListLastPageIndex());
@@ -248,17 +254,11 @@ public class FilmixApiResource {
 
 
     @GET
-    @Path("/parse_async_persons")
-    public String parseAsyncPersons(@QueryParam("threads") int i, @QueryParam("start") boolean start, @QueryParam("split") int splitListSize) {
+    @Path("/parse_persons")
+    public String parsePersons(@QueryParam("threads") int i, @QueryParam("start") boolean start, @QueryParam("split") int splitListSize) {
         String siteName = "Filmix";
         XLinkType type = XLinkType.fromString("PERSON_LINKS");
 
-        String info;
-        if (start) {
-            info = "working";
-        } else {
-            info = "stopped";
-        }
         ArticleParser personParser = ParserFactory.getInstance().getFilmixArticleParser(
                 siteName,
                 type,
@@ -267,17 +267,9 @@ public class FilmixApiResource {
                 splitListSize,
                 configuration);
 
-        CompletableFuture<Void> future = CompletableFuture.runAsync(
-                () -> {
-                    if (start) {
-                        personParser.startParser();
-                    } else {
-                        personParser.stopParser();
-                    }
-                }
-        );
+        personParser.startParser();
 
-        return "Async link parser " + info;
+        return "Async persons parser ";
     }
 
     @GET
@@ -396,8 +388,40 @@ public class FilmixApiResource {
 
     @GET
     @Path("/countries")
-    public Response getCountryList(){
+    public Response getCountryList() {
         List<String> countryList = filmixService.getCountryList();
         return Response.ok(countryList).build();
+    }
+
+    @GET
+    @Path("/test_map")
+    public Response getMapOfIdUploadDate() {
+        Map<Integer, Date> testMap = filmixService.getMapOfFilmIdUploadDate();
+        return Response.ok(testMap).build();
+    }
+
+    @GET
+    @Path("/rating_for_film")
+    public Response getRatingForFilm(@QueryParam("id") int id) {
+        Rating r = filmixService.getRatingById(id);
+        return Response.ok(r).build();
+    }
+
+    @GET
+    @Path("/top_films")
+    public Response getTopFilm(@QueryParam("page") int page, @QueryParam("limit") int maxResult) {
+        return Response.ok(filmixService.topFilms(page, maxResult)).build();
+    }
+
+    @GET
+    @Path("/last_movies")
+    public Response getLastMovies(@QueryParam("page") int page, @QueryParam("limit") int maxResult) {
+        return Response.ok(filmixService.lastMovies(page, maxResult)).build();
+    }
+
+    @GET
+    @Path("/last_tv_series")
+    public Response getLastTvSeries(@QueryParam("page") int page, @QueryParam("limit") int maxResult) {
+        return Response.ok(filmixService.lastTvSeries(page, maxResult)).build();
     }
 }
