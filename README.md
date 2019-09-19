@@ -2,9 +2,11 @@
 
 <br>
 
-![alt text][screen_1]
+[![Starting Cinematrix Server](https://github.com/Fleival/cinematrix-video_server/blob/master/Gif_preview/CinematrixApp-2.gif)](https://www.youtube.com/watch?v=0MnbAeajM9A "Starting Cinematrix Server - Click to Watch!")
 
-[screen_1]: https://github.com/Fleival/cinematrix-video_server/blob/master/Gif_preview/CinematrixApp-2.gif 
+<br>
+
+[![Cinematrix Server and Android App in action](https://img.youtube.com/vi/FRB0rUeTU9c/0.jpg)](https://www.youtube.com/watch?v=FRB0rUeTU9c "Cinematrix Server and Android App in action - Click to Watch!")
 
 -   implemented on the Dropwizard framework and runs in the Jetty servlet
     container;
