@@ -431,5 +431,15 @@ public class FilmixServiceImpl implements FilmixService {
     @Override public List<Film> lastTvSeries(int page, int maxResult) {
         return filmixFilmDao.lastTvSeries(page ,maxResult);
     }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Override public List<Film> allMovies(int page, int maxResult) {
+        return filmixFilmDao.allMovies(page ,maxResult);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Override public List<Film> allTvSeries(int page, int maxResult) {
+        return filmixFilmDao.allTvSeries(page ,maxResult);
+    }
 }
 

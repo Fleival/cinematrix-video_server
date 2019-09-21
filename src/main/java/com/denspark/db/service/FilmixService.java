@@ -76,4 +76,8 @@ public interface FilmixService {
     List<Film> lastMovies(int page, int maxResult);
 
     List<Film> lastTvSeries(int page, int maxResult);
+
+    List<Film> allMovies(int page, int maxResult);
+
+    List<Film> allTvSeries(int page, int maxResult);
 }

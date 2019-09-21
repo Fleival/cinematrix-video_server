@@ -24,4 +24,6 @@ public interface FilmixFilmDao extends CinemaDao<Film>, CinemaDaoAdditional<Film
     List<Film> topFilms(int page, int maxResult);
     List<Film> lastMovies(int page, int maxResult);
     List<Film> lastTvSeries(int page, int maxResult);
+    List<Film> allMovies(int page, int maxResult);
+    List<Film> allTvSeries(int page, int maxResult);
 }

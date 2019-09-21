@@ -382,4 +382,42 @@ public class FilmixFilmDaoImpl extends CinemaCommonDao<Film> implements FilmixFi
         List<Film> resultList = query.getResultList();
         return resultList;
     }
+
+    @Override public List<Film> allMovies(int page, int maxResult) {
+        String sqlQuery = "SELECT STRAIGHT_JOIN  f.* " +
+                "FROM films f " +
+                "WHERE f.id NOT IN ( " +
+                "SELECT fg.film_id" +
+                " FROM films_genres fg" +
+                " WHERE fg.genre_id IN (10,21,23,27,28,29,30,31,33,34,37,38,39,40,42)" +
+                " GROUP BY fg.film_id\n" +
+                " ) ";
+
+        Query query = currentSession().createNativeQuery(sqlQuery, Film.class);
+        final int pageIndex = page - 1 < 0 ? 0 : page - 1;
+        int fromRecordIndex = pageIndex * maxResult;
+        query.setFirstResult(fromRecordIndex);
+        query.setMaxResults(maxResult);
+        List<Film> resultList = query.getResultList();
+        return resultList;
+    }
+
+    @Override public List<Film> allTvSeries(int page, int maxResult) {
+        String sqlQuery = "SELECT STRAIGHT_JOIN  f.* " +
+                "FROM films f " +
+                "WHERE f.id IN ( " +
+                "SELECT fg.film_id" +
+                " FROM films_genres fg" +
+                " WHERE fg.genre_id IN (10,21,23,27,28,29,30,31,33,34,37,38,39,40,42)" +
+                " GROUP BY fg.film_id\n" +
+                " ) ";
+
+        Query query = currentSession().createNativeQuery(sqlQuery, Film.class);
+        final int pageIndex = page - 1 < 0 ? 0 : page - 1;
+        int fromRecordIndex = pageIndex * maxResult;
+        query.setFirstResult(fromRecordIndex);
+        query.setMaxResults(maxResult);
+        List<Film> resultList = query.getResultList();
+        return resultList;
+    }
 }

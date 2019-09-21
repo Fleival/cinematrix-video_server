@@ -424,4 +424,16 @@ public class FilmixApiResource {
     public Response getLastTvSeries(@QueryParam("page") int page, @QueryParam("limit") int maxResult) {
         return Response.ok(filmixService.lastTvSeries(page, maxResult)).build();
     }
+
+    @GET
+    @Path("/all_movies")
+    public Response allMovies(@QueryParam("page") int page, @QueryParam("limit") int maxResult) {
+        return Response.ok(filmixService.allMovies(page, maxResult)).build();
+    }
+
+    @GET
+    @Path("/all_tv_series")
+    public Response allTvSeries(@QueryParam("page") int page, @QueryParam("limit") int maxResult) {
+        return Response.ok(filmixService.allTvSeries(page, maxResult)).build();
+    }
 }
