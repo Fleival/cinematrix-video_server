@@ -332,7 +332,7 @@ public class FilmixFilmDaoImpl extends CinemaCommonDao<Film> implements FilmixFi
                 " WHERE fg.genre_id IN (10,21,23,27,28,29,30,31,33,34,37,38,39,40,42)" +
                 " GROUP BY fg.film_id\n" +
                 " ) " +
-                "ORDER BY f.positive_rating DESC  ";
+                "ORDER BY (f.positive_rating - f.negative_rating) DESC ";
 
         Query query = currentSession().createNativeQuery(sqlQuery, Film.class);
         final int pageIndex = page - 1 < 0 ? 0 : page - 1;
