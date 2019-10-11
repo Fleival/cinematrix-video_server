@@ -1,0 +1,71 @@
+#PARSER CONFIGURATION
+
+config_PATH: cinematrix/parser_config/sites_config_css_nav.yml
+xlink_WORKING_FOLDER: cinematrix/xlink_dir/
+
+#DATABASE CONFIGURATION
+#database:
+#  driverClass: org.h2.Driver
+#  user: Denis
+#  password: d26011986
+#  url: jdbc:h2:tcp://localhost/~/genres
+#  validationQuery: "/* MyApplication Health Check */ SELECT 42"
+#  properties:
+#    charSet: UTF-8
+
+database:
+  driverClass: com.mysql.cj.jdbc.Driver
+  user: streletsdy
+  password: 1111
+  url: jdbc:mysql://192.168.43.220/filmixdb?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+  validationQuery: "/* MyApplication Health Check */ SELECT 42"
+  properties:
+    charSet: UTF-8
+#    hibernate.hbm2ddl.auto: mergeAndClear
+
+#SERVER CONFIGURATION
+server:
+  requestLog:
+    appenders:
+      - type: console
+        timeZone: system
+
+  applicationConnectors:
+    - type: http
+      port: 8020
+  adminConnectors:
+    - type: http
+      port: 8021
+
+#SUNDIAL SCHEDULER CONFIGURATION
+sundial:
+  thread-pool-size: 10
+  shutdown-on-unload: true
+  start-delay-seconds: 0
+  start-scheduler-on-load: false
+  global-lock-on-load: false
+  annotated-jobs-package-name:
+  tasks: [startjob, stopjob, addjob, removejob, startschedulerpackage, startscheduler, stopscheduler, pausescheduler]
+
+#LOGGER CONFIGURATION
+logging:
+  level: INFO
+  loggers:
+    com.denspark.spring: INFO
+    org.hibernate.SQL: INFO
+    #org.hibernate.type.descriptor.sql: TRACE
+    org.springframework.transaction: INFO
+
+
+  appenders:
+    - type: console
+      timeZone: system
+
+    - type: file
+      threshold: INFO
+      logFormat: "%-6level [%d{HH:mm:ss.SSS}] [%t] %logger{5} - %X{code} %msg %n"
+      currentLogFilename: /tmp/application.log
+      archivedLogFilenamePattern: /tmp/application-%d{yyyy-MM-dd}-%i.log.gz
+      archivedFileCount: 7
+      timeZone: system
+      maxFileSize: 10MB

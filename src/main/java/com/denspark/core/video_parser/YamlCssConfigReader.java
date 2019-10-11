@@ -87,6 +87,8 @@ public class YamlCssConfigReader {
                     e.printStackTrace();
                 }
             }
+        } else {
+            System.out.println("Unable to read config file: " + configFile);
         }
 
     }

@@ -16,7 +16,7 @@ import org.springframework.context.ApplicationContext;
 
 import java.util.concurrent.TimeUnit;
 
-@SimpleTrigger(repeatInterval = 15, timeUnit = TimeUnit.MINUTES, jobDataMap = {"LINK_THREADS:16", "MOVIES_THREADS:24", "X_TYPE:FILM_LINKS", "SPLIT_LIST_SIZE:500"})
+@SimpleTrigger(repeatInterval = 15, timeUnit = TimeUnit.MINUTES, jobDataMap = {"LINK_THREADS:16", "MOVIES_THREADS:24", "X_TYPE:FILM_LINKS", "SPLIT_LIST_SIZE:10"})
 public class InitializeConfigAndUpdateMovieLinks extends Job {
     private static final Logger logger = LoggerFactory.getLogger(InitializeConfigAndUpdateMovieLinks.class);
 

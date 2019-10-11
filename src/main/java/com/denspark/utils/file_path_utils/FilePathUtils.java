@@ -1,5 +1,7 @@
 package com.denspark.utils.file_path_utils;
 
+import org.apache.commons.lang3.SystemUtils;
+
 import java.io.File;
 
 public class FilePathUtils {
@@ -23,7 +25,10 @@ public class FilePathUtils {
         if (debugMode) {
             System.out.println("Path: " + path);
         }
-        String correctPath = path.substring(1, path.lastIndexOf("/"));
+        String correctPath = path.substring(0, path.lastIndexOf("/"));
+        if (SystemUtils.IS_OS_WINDOWS) {
+            correctPath = path.substring(1, path.lastIndexOf("/"));
+        }
         if (!(path.contains(".jar"))) {
             correctPath = correctPath.substring(0, correctPath.lastIndexOf("/"));
         }

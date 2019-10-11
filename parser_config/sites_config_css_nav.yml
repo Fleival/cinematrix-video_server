@@ -1,10 +1,10 @@
 articleItemSelector: '#dle-content > article'
 articleItemURLSelector: '#dle-content > article > div.short > a'
 articleLastPageSelector: '#dle-content>div>a:nth-last-child(2)'
-articleListLastPageIndex: 4569
+articleListLastPageIndex: 0
 cartoonCategorySelector: '#header > div > nav > ul > li:nth-child(3) > div > ul:nth-child(n+2)
   > li a[href]'
-cartoonListLastPageIndex: 239
+cartoonListLastPageIndex: 0
 cartoonListLastPageSelector: '#dle-content>div>a:nth-last-child(2)'
 cartoonListUrl: http://filmix.cc/multfilmy
 categoryListElementSelector: '#header>div>nav>ul>li:nth-child(1)>div>ul:gt(0)>li>a'
@@ -14,13 +14,13 @@ durationElementRegex: duration
 fileExtension: .html
 filmCategorySelector: '#header > div > nav > ul > li:nth-child(1) > div > ul:nth-child(n+2)
   > li a[href]'
-filmListLastPageIndex: 3623
+filmListLastPageIndex: 0
 filmListLastPageSelector: '#dle-content>div>a:nth-last-child(2)'
 filmListUrl: http://filmix.cc/films
 name: Filmix
 pageQuerySeparator: page
 personItemURLSelector: '#dle-content > article > div.short > a'
-personListLastPageIndex: 2478
+personListLastPageIndex: 0
 personListLastPageIndexSelector: '#dle-content > div > div > div > div > a:nth-child(6)'
 personsSectionUrl: http://filmix.cc/persons
 ratingElementKey: class
@@ -29,7 +29,7 @@ saveDir: files/sites/tmp_html
 separator: /
 serialCategorySelector: '#header > div > nav > ul > li:nth-child(2) > div > ul:nth-child(n+2)
   > li a[href]'
-serialListLastPageIndex: 687
+serialListLastPageIndex: 0
 serialListLastPageSelector: '#dle-content>div>a:nth-last-child(2)'
 serialListUrl: http://filmix.cc/serialy
 thumbnailAbsUrlKey: src
