@@ -1,10 +1,11 @@
 package com.denspark.core.video_parser.article_parser.impls;
 
-import com.denspark.config.CinematrixVideoConfiguration;
+import com.denspark.config.CinematrixServerConfiguration;
 import com.denspark.core.video_parser.article_parser.ArticleGrabber;
 import com.denspark.core.video_parser.article_parser.ArticleParser;
 import com.denspark.core.video_parser.model.XLink;
 import com.denspark.core.video_parser.model.XLinkType;
+import com.denspark.core.video_parser.model.dto.PersonNames;
 import com.denspark.core.video_parser.video_models.cinema.Film;
 import com.denspark.core.video_parser.video_models.cinema.Genre;
 import com.denspark.core.video_parser.video_models.cinema.Person;
@@ -24,7 +25,7 @@ public class FilmixArticleParser extends ArticleParser {
     private FilmixService filmixService;
 
 
-    private FilmixArticleParser(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, int splitListSize, CinematrixVideoConfiguration configuration) {
+    private FilmixArticleParser(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, int splitListSize, CinematrixServerConfiguration configuration) {
         super(siteName, type, THREAD_COUNT, context, configuration);
         super.splitListSize = splitListSize;
         this.filmixService = (FilmixService) context.getBean("filmixService");
@@ -48,7 +49,11 @@ public class FilmixArticleParser extends ArticleParser {
 
         genreId = new AtomicInteger(initValue);
 
-        List<Person> persons = filmixService.getAllPersons();
+//        List<String> personNames = filmixService.getAllPersonNamesInDb();
+
+//        List<Person> persons = filmixService.getAllPersons();
+
+        List<PersonNames> persons = filmixService.getPersonNamesInDb();
 
         persons.forEach(
                 person -> {
@@ -75,11 +80,11 @@ public class FilmixArticleParser extends ArticleParser {
         return new HashMap<>();
     }
 
-    public static FilmixArticleParser getInstance(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, int splitListSize, CinematrixVideoConfiguration configuration) {
+    public static FilmixArticleParser getInstance(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, int splitListSize, CinematrixServerConfiguration configuration) {
         if (mInstance == null) {
             synchronized (FilmixArticleParser.class) {
                 if (mInstance == null) {
-                    mInstance = new FilmixArticleParser(siteName, type, THREAD_COUNT, context, splitListSize,configuration);
+                    mInstance = new FilmixArticleParser(siteName, type, THREAD_COUNT, context, splitListSize, configuration);
                 }
             }
         }

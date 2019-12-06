@@ -19,9 +19,9 @@ database:
   password: 1111
   url: jdbc:mysql://localhost/FilmixDB?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
   validationQuery: "/* MyApplication Health Check */ SELECT 42"
-  properties:
-    charSet: UTF-8
-#    hibernate.hbm2ddl.auto: mergeAndClear
+#  properties:
+#    charSet: UTF-8
+#    hibernate.hbm2ddl.auto: update
 
 #SERVER CONFIGURATION
 server:
@@ -53,7 +53,7 @@ logging:
   loggers:
     com.denspark.spring: INFO
     org.hibernate.SQL: INFO
-   #org.hibernate.type.descriptor.sql: TRACE
+    #org.hibernate.type.descriptor.sql: TRACE
     org.springframework.transaction: INFO
 
 
@@ -69,3 +69,77 @@ logging:
       archivedFileCount: 7
       timeZone: system
       maxFileSize: 10MB
+
+# the key needs to match the configuration key of the renderer (ViewRenderer::getConfigurationKey)
+viewRendererConfiguration:
+  freemarker:
+    strict_syntax: yes
+    whitespace_stripping: yes
+  mustache:
+    cache: false
+
+hibernateProperties:
+  #  hibernate.dialect:
+  hibernate.show_sql: false
+  hibernate.format_sql: true
+  hibernate.use_sql_comments: true
+  hibernate.use_identifier_rollback: true
+  hibernate.hbm2ddl.auto: none
+
+  hibernate.connection.CharSet: utf8
+  hibernate.connection.characterEncoding: utf8
+  hibernate.connection.useUnicode: true
+
+  hibernate.cache.use_second_level_cache: true
+  hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+
+  hibernate.cache.use_query_cache: true
+
+cinemixConfig:
+
+  films_genres_exclude: [
+    реальное тв,
+    короткометражка,
+    документальный,
+    музыка,
+    биография,
+    аниме,
+    новости,
+    ток-шоу,
+    для взрослых,
+    концерт,
+    игра,
+    фильм-нуар,
+    церемония,
+    сериалы,
+    мультсериалы,
+    передачи c тв,
+    дорамы,
+    ситком,
+    оригинал,
+    тв сериалы ]
+
+  tv_series_genres_exclude: [
+    короткометражка,
+    документальный,
+    музыка,
+    биография,
+    аниме,
+    спорт,
+    новости,
+    ток-шоу,
+    для взрослых,
+    концерт,
+    игра,
+    фильм-нуар,
+    церемония,
+    мультсериалы,
+    дорамы,
+    ситком ]
+
+  tv_series_genre: [
+    сериалы,
+    мультсериалы,
+    дорамы,
+    ситком,
+    тв сериалы ]

@@ -3,45 +3,36 @@
 
     <schedule>
 
-        <!--        &lt;!&ndash; job with cron trigger &ndash;&gt;-->
-        <!--        <job>-->
-        <!--            <name>SampleJob3</name>-->
-        <!--            <job-class>com.foo.bar.jobs.SampleJob3</job-class>-->
-        <!--            <concurrency-allowed>true</concurrency-allowed>-->
-        <!--        </job>-->
-        <!--        <trigger>-->
-        <!--            <cron>-->
-        <!--                <name>SampleJob3-Trigger</name>-->
-        <!--                <job-name>SampleJob3</job-name>-->
-        <!--                <cron-expression>*/15 * * * * ?</cron-expression>-->
-        <!--            </cron>-->
-        <!--        </trigger>-->
-
-        <!-- job with simple trigger -->
         <job>
-            <name>CinematrixFirstJob</name>
-            <job-class>com.denspark.task.jobs.x_job.CinematrixFirstJob</job-class>
+            <name>InitializeConfigAndUpdateMovieLinks</name>
+            <job-class>com.denspark.task.jobs.movie.InitializeConfigAndUpdateMovieLinks</job-class>
             <concurrency-allowed>false</concurrency-allowed>
-            <!--            <job-data-map>-->
-            <!--                <entry>-->
-            <!--                    <key>MyParam</key>-->
-            <!--                    <value>42</value>-->
-            <!--                </entry>-->
-            <!--            </job-data-map>-->
+            <job-data-map>
+                <entry>
+                    <key>LINK_THREADS</key>
+                    <value>16</value>
+                </entry>
+                <entry>
+                    <key>MOVIES_THREADS</key>
+                    <value>24</value>
+                </entry>
+                <entry>
+                    <key>X_TYPE</key>
+                    <value>FILM_LINKS</value>
+                </entry>
+                <entry>
+                    <key>SPLIT_LIST_SIZE</key>
+                    <value>1000</value>
+                </entry>
+            </job-data-map>
         </job>
         <trigger>
             <simple>
-                <name>CinematrixFirstJob-Trigger</name>
-                <job-name>CinematrixFirstJob</job-name>
-                <repeat-count>5</repeat-count>
-                <repeat-interval>5000</repeat-interval>
+                <name>InitializeConfigAndUpdateMovieLinks-Trigger</name>
+                <job-name>InitializeConfigAndUpdateMovieLinks</job-name>
+                <repeat-count>-1</repeat-count>
+                <repeat-interval>14400000</repeat-interval>
             </simple>
-<!--            <cron>-->
-<!--                <name>CinematrixFirstJob-Trigger</name>-->
-<!--                <job-name>CinematrixFirstJob</job-name>-->
-<!--                <cron-expression>0 0/50 * 1/1 * ? *</cron-expression>-->
-<!--            </cron>-->
-
         </trigger>
 
     </schedule>

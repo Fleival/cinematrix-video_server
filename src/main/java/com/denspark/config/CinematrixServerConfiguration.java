@@ -1,5 +1,6 @@
 package com.denspark.config;
 
+import com.denspark.config.cinema.CinematrixCinemaUserConfig;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 import io.dropwizard.db.DataSourceFactory;
@@ -8,8 +9,10 @@ import org.knowm.dropwizard.sundial.SundialConfiguration;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Collections;
+import java.util.Map;
 
-public class CinematrixVideoConfiguration extends Configuration {
+public class CinematrixServerConfiguration extends Configuration {
     @NotEmpty
     private String config_PATH;
     @NotEmpty
@@ -17,6 +20,12 @@ public class CinematrixVideoConfiguration extends Configuration {
 
 
     private DataSourceFactory dataSourceFactory;
+
+    @NotNull
+    private Map<String, Map<String, String>> viewRendererConfiguration = Collections.emptyMap();
+
+    @NotNull
+    private Map<String, String> hibernateProperties = Collections.emptyMap();
 
     @Valid
     @NotNull
@@ -28,6 +37,10 @@ public class CinematrixVideoConfiguration extends Configuration {
     @NotNull
     public SundialConfiguration sundialConfiguration = new SundialConfiguration();
 
+    @Valid
+    @NotNull
+    public CinematrixCinemaUserConfig cinemixConfig = new CinematrixCinemaUserConfig();
+
     @JsonProperty("database")
     public void setDataSourceFactory(DataSourceFactory dataSourceFactory) {
         this.dataSourceFactory = dataSourceFactory;
@@ -38,23 +51,30 @@ public class CinematrixVideoConfiguration extends Configuration {
         return config_PATH;
     }
 
-    @JsonProperty
-    public void setConfig_PATH(String config_PATH) {
-        this.config_PATH = config_PATH;
-    }
 
     @JsonProperty
     public String getXlink_WORKING_FOLDER() {
         return xlink_WORKING_FOLDER;
     }
 
-    @JsonProperty
-    public void setXlink_WORKING_FOLDER(String xlink_WORKING_FOLDER) {
-        this.xlink_WORKING_FOLDER = xlink_WORKING_FOLDER;
-    }
-
     @JsonProperty("sundial")
     public SundialConfiguration getSundialConfiguration() {
         return sundialConfiguration;
+    }
+
+    @JsonProperty("viewRendererConfiguration")
+    public Map<String, Map<String, String>> getViewRendererConfiguration() {
+        return viewRendererConfiguration;
+    }
+
+
+    @JsonProperty("hibernateProperties")
+    public Map<String, String> getHibernateProperties() {
+        return hibernateProperties;
+    }
+
+    @JsonProperty("cinemixConfig")
+    public CinematrixCinemaUserConfig getCinematrixCinemaUserConfig() {
+        return cinemixConfig;
     }
 }

@@ -1,10 +1,10 @@
 articleItemSelector: '#dle-content > article'
 articleItemURLSelector: '#dle-content > article > div.short > a'
 articleLastPageSelector: '#dle-content>div>a:nth-last-child(2)'
-articleListLastPageIndex: 0
+articleListLastPageIndex: 4674
 cartoonCategorySelector: '#header > div > nav > ul > li:nth-child(3) > div > ul:nth-child(n+2)
   > li a[href]'
-cartoonListLastPageIndex: 0
+cartoonListLastPageIndex: 243
 cartoonListLastPageSelector: '#dle-content>div>a:nth-last-child(2)'
 cartoonListUrl: http://filmix.cc/multfilmy
 categoryListElementSelector: '#header>div>nav>ul>li:nth-child(1)>div>ul:gt(0)>li>a'
@@ -14,13 +14,13 @@ durationElementRegex: duration
 fileExtension: .html
 filmCategorySelector: '#header > div > nav > ul > li:nth-child(1) > div > ul:nth-child(n+2)
   > li a[href]'
-filmListLastPageIndex: 0
+filmListLastPageIndex: 3702
 filmListLastPageSelector: '#dle-content>div>a:nth-last-child(2)'
 filmListUrl: http://filmix.cc/films
 name: Filmix
 pageQuerySeparator: page
 personItemURLSelector: '#dle-content > article > div.short > a'
-personListLastPageIndex: 0
+personListLastPageIndex: 9911
 personListLastPageIndexSelector: '#dle-content > div > div > div > div > a:nth-child(6)'
 personsSectionUrl: http://filmix.cc/persons
 ratingElementKey: class
@@ -29,7 +29,7 @@ saveDir: files/sites/tmp_html
 separator: /
 serialCategorySelector: '#header > div > nav > ul > li:nth-child(2) > div > ul:nth-child(n+2)
   > li a[href]'
-serialListLastPageIndex: 0
+serialListLastPageIndex: 707
 serialListLastPageSelector: '#dle-content>div>a:nth-last-child(2)'
 serialListUrl: http://filmix.cc/serialy
 thumbnailAbsUrlKey: src
@@ -42,45 +42,3 @@ videoSrcElementsKey: class
 videoSrcElementsRegex: player2-container
 videoTitleKey: class
 videoTitleRegex: videotitle
----
-articleItemSelector: ''
-articleItemURLSelector: ''
-articleLastPageSelector: ''
-articleListLastPageIndex: 0
-cartoonCategorySelector: ''
-cartoonListLastPageIndex: 0
-cartoonListLastPageSelector: ''
-cartoonListUrl: ''
-categoryListElementSelector: ''
-categoryListElementUrlAttr: ''
-durationElementKey: ''
-durationElementRegex: ''
-fileExtension: ''
-filmCategorySelector: ''
-filmListLastPageIndex: 0
-filmListLastPageSelector: ''
-filmListUrl: ''
-name: FilmixZ
-pageQuerySeparator: ''
-personItemURLSelector: ''
-personListLastPageIndex: 0
-personListLastPageIndexSelector: ''
-personsSectionUrl: ''
-ratingElementKey: ''
-ratingElementRegex: ''
-saveDir: ''
-separator: /
-serialCategorySelector: ''
-serialListLastPageIndex: 0
-serialListLastPageSelector: ''
-serialListUrl: ''
-thumbnailAbsUrlKey: ''
-thumbnailUrlKey: ''
-thumbnailUrlRegex: ''
-url: ''
-videoAbsUrlKey: ''
-videoSrcElementAttrKey: ''
-videoSrcElementsKey: ''
-videoSrcElementsRegex: ''
-videoTitleKey: ''
-videoTitleRegex: ''

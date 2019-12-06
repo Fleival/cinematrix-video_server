@@ -5,4 +5,4 @@ ADD docker_run/xlink_dir /home/cinematrix/xlink_dir
 COPY target/cinematrix-video-app-1.0.1-alpha.jar /home/cinematrix/
 EXPOSE 8020 8021
 WORKDIR /home/cinematrix/
-CMD ["java", "-jar", "cinematrix-video-app-1.0.1-alpha.jar", "server", "config.yml"]
+CMD ["java","-Xms64m", "-Xmx724m", "-jar", "cinematrix-video-app-1.0.1-alpha.jar", "server", "config.yml"]

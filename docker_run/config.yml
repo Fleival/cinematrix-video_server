@@ -17,7 +17,7 @@ database:
   driverClass: com.mysql.cj.jdbc.Driver
   user: streletsdy
   password: 1111
-  url: jdbc:mysql://192.168.43.220/filmixdb?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+  url: jdbc:mysql://192.168.43.220/filmixdb?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
   validationQuery: "/* MyApplication Health Check */ SELECT 42"
   properties:
     charSet: UTF-8
@@ -69,3 +69,11 @@ logging:
       archivedFileCount: 7
       timeZone: system
       maxFileSize: 10MB
+
+# the key needs to match the configuration key of the renderer (ViewRenderer::getConfigurationKey)
+viewRendererConfiguration:
+  freemarker:
+    strict_syntax: yes
+    whitespace_stripping: yes
+  mustache:
+    cache: false

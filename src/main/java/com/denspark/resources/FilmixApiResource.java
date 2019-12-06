@@ -1,6 +1,6 @@
 package com.denspark.resources;
 
-import com.denspark.config.CinematrixVideoConfiguration;
+import com.denspark.config.CinematrixServerConfiguration;
 import com.denspark.core.experiments.db.EntityTester;
 import com.denspark.core.experiments.db.MtDbWriter;
 import com.denspark.core.video_parser.Parser;
@@ -40,13 +40,13 @@ public class FilmixApiResource {
 
     private final ApplicationContext context;
     private FilmixService filmixService;
-    private final CinematrixVideoConfiguration configuration;
+    private final CinematrixServerConfiguration configuration;
 
 
     @Context
     private UriInfo uriInfo;
 
-    public FilmixApiResource(ApplicationContext context, CinematrixVideoConfiguration configuration) {
+    public FilmixApiResource(ApplicationContext context, CinematrixServerConfiguration configuration) {
         this.context = context;
         this.filmixService = (FilmixService) context.getBean("filmixService");
         this.configuration = configuration;
@@ -356,7 +356,7 @@ public class FilmixApiResource {
     @Path("/get_db_state")
     public Response getDBstate() {
         Integer maxId = filmixService.getMaxId();
-        Long moviesCount = filmixService.getMoviesCount();
+        Long moviesCount = filmixService.countAllMovies();
         ServiceData serviceData = new ServiceData(maxId, moviesCount);
         Response response = Response.ok(serviceData).build();
         return response;

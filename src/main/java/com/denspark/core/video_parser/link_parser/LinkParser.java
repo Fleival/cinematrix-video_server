@@ -1,6 +1,6 @@
 package com.denspark.core.video_parser.link_parser;
 
-import com.denspark.config.CinematrixVideoConfiguration;
+import com.denspark.config.CinematrixServerConfiguration;
 import com.denspark.core.video_parser.Parser;
 import com.denspark.core.video_parser.model.Link;
 import com.denspark.core.video_parser.model.SiteCss;
@@ -29,7 +29,7 @@ public abstract class LinkParser extends Parser {
     private Set<XLink> xLinkSet = new LinkedHashSet<>();
     private Set<Link> linkSet = new LinkedHashSet<>();
 
-    public LinkParser(String siteName, XLinkType type, int THREAD_COUNT, CinematrixVideoConfiguration configuration) {
+    public LinkParser(String siteName, XLinkType type, int THREAD_COUNT, CinematrixServerConfiguration configuration) {
         super(siteName, type, THREAD_COUNT, configuration);
     }
 
@@ -62,20 +62,20 @@ public abstract class LinkParser extends Parser {
                     System.out.println("List#: " + count.getAndIncrement() + "/" + splitBigList.size());
                     grab(list);
 
-                    multiParserUtils.write(xLinkXmlFilename, xLinkSet);
-
-                    writeOrUpdateLinks();
+//                    writeOrUpdateLinks();
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            } else {
-                writeOrUpdateLinks();
-                break;
             }
+//            else {
+//                System.out.println("Parse completed , writing results...");
+//                writeOrUpdateLinks();
+//                break;
+//            }
         }
-
-//        saveResultToDB();
+        System.out.println("Parse completed , writing results...");
+        writeOrUpdateLinksAndXlinks();
         stopInstance();
     }
 
@@ -206,6 +206,11 @@ public abstract class LinkParser extends Parser {
 
     public void writeOrUpdateLinks() {
         multiParserUtils.writeLinks(linksXmlFilename, linkSet);
+    }
+
+    public void writeOrUpdateLinksAndXlinks() {
+        multiParserUtils.writeLinks(linksXmlFilename, linkSet);
+        multiParserUtils.write(xLinkXmlFilename, xLinkSet);
     }
 
     public void setLastPage(int lastPage) {

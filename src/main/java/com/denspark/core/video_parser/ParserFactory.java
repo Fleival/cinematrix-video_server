@@ -1,6 +1,6 @@
 package com.denspark.core.video_parser;
 
-import com.denspark.config.CinematrixVideoConfiguration;
+import com.denspark.config.CinematrixServerConfiguration;
 import com.denspark.core.video_parser.article_parser.ArticleParser;
 import com.denspark.core.video_parser.article_parser.impls.FilmixArticleParser;
 import com.denspark.core.video_parser.link_parser.LinkParser;
@@ -25,7 +25,7 @@ public class ParserFactory {
         return mInstance;
     }
 
-    public Parser getFilmixParser(String siteName, XLinkType type, int THREAD_COUNT,ApplicationContext context, CinematrixVideoConfiguration configuration) {
+    public Parser getFilmixParser(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, CinematrixServerConfiguration configuration) {
         this.parser = FilmixLinkParser.getInstance(
                 siteName,
                 type,
@@ -36,7 +36,7 @@ public class ParserFactory {
         return parser;
     }
 
-    public LinkParser getFilmixLinkParser(String siteName, XLinkType type, int THREAD_COUNT,ApplicationContext context,  CinematrixVideoConfiguration configuration) {
+    public LinkParser getFilmixLinkParser(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, CinematrixServerConfiguration configuration) {
         this.linkParser = FilmixLinkParser.getInstance(
                 siteName,
                 type,
@@ -47,7 +47,7 @@ public class ParserFactory {
         return linkParser;
     }
 
-    public ArticleParser getFilmixArticleParser(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, int splitListSize, CinematrixVideoConfiguration configuration) {
+    public ArticleParser getFilmixArticleParser(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, int splitListSize, CinematrixServerConfiguration configuration) {
         this.articleParser = FilmixArticleParser.getInstance(
                 siteName,
                 type,

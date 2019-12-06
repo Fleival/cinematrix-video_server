@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="backgroundSvg" viewBox="0 0 1280 800" version="1.1">
+    <defs id="defs183">
+        <filter id="b" width="1280" height="243" x="0" y="568.5" filterUnits="userSpaceOnUse">
+            <feOffset id="feOffset156" dy="3"/>
+            <feGaussianBlur id="feGaussianBlur158" result="blur" stdDeviation="3"/>
+            <feFlood id="feFlood160" flood-opacity=".2"/>
+            <feComposite id="feComposite162" in2="blur" operator="in" result="result1"/>
+            <feComposite id="feComposite164" in="SourceGraphic" in2="result1"/>
+        </filter>
+        <filter id="c" width="333.2" height="180.9" x="954.9" y="500" filterUnits="userSpaceOnUse">
+            <feOffset id="feOffset167" dy="3"/>
+            <feGaussianBlur id="feGaussianBlur169" result="blur-2" stdDeviation="3"/>
+            <feFlood id="feFlood171" flood-opacity=".7"/>
+            <feComposite id="feComposite173" in2="blur-2" operator="in" result="result1"/>
+            <feComposite id="feComposite175" in="SourceGraphic" in2="result1"/>
+        </filter>
+        <linearGradient id="a" x1="0" x2="400" y1="372.4" y2="288" gradientTransform="matrix(.99286 0 0 2 9 0)"
+                        gradientUnits="userSpaceOnUse">
+            <stop id="stop178" offset="0" stop-color="#171717"/>
+            <stop id="stop180" offset="1" stop-color="#333333"/>
+        </linearGradient>
+    </defs>
+    <path id="path185" fill="url(#a)" stroke-width="1.4" d="M 0 0 h 400 v 800 H 0 z"/>
+    <g id="g189" filter="url(#b)">
+        <path id="redTriangle" fill="#e53935" d="M 0 740 l 1280 -165 v 225 H 0 z" data-name="footer_bg"/>
+    </g>
+    <g id="g199" filter="url(#c)" transform="translate(0)">
+        <text x="-97.1" y="-46.2" id="text197" fill="#e53935" data-name="CineMiX"
+              font-family="SegoePrint-Bold, 'Segoe Print'" font-size="73" font-weight="700"
+              transform="rotate(-7,5452.5,-8896.9)">
+            <tspan id="tspan195" x="-150.3" y="0">CineMiX</tspan>
+        </text>
+        <text x="-102" y="-34" id="text193" fill="#1d1d1d" data-name="API server" font-family="SegoeUI, 'Segoe UI'"
+              font-size="61" transform="translate(982.3,672)">
+            <tspan id="tspan191" x="0" y="0">API server</tspan>
+        </text>
+    </g>
+</svg>

@@ -1,6 +1,6 @@
 package com.denspark.core.video_parser;
 
-import com.denspark.config.CinematrixVideoConfiguration;
+import com.denspark.config.CinematrixServerConfiguration;
 import com.denspark.core.video_parser.model.SiteCss;
 import com.denspark.core.video_parser.model.XLinkType;
 import com.denspark.utils.parser.MultiParserUtils;
@@ -33,7 +33,7 @@ public abstract class Parser {
     protected CompletableFuture<Void> allFutures;
     protected AtomicBoolean doParse = new AtomicBoolean(true);
 
-    protected Parser(String siteName, XLinkType type, int THREAD_COUNT, CinematrixVideoConfiguration configuration) {
+    protected Parser(String siteName, XLinkType type, int THREAD_COUNT, CinematrixServerConfiguration configuration) {
 //        this.configuration = configuration;
         configReader = YamlCssConfigReader
                 .getInstance(configuration.getConfig_PATH());
@@ -165,6 +165,7 @@ public abstract class Parser {
 
             configReader.updateConfigFile();
             System.out.println(siteCss);
+
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.denspark.db.service;
 
 import com.denspark.core.video_parser.model.XLink;
+import com.denspark.core.video_parser.model.dto.PersonNames;
 import com.denspark.core.video_parser.video_models.cinema.Film;
 import com.denspark.core.video_parser.video_models.cinema.Genre;
 import com.denspark.core.video_parser.video_models.cinema.Person;
@@ -290,8 +291,18 @@ public class FilmixServiceImpl implements FilmixService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    @Override public Long getMoviesCount() {
-        return filmixFilmDao.getMoviesCount();
+    @Override public Long countAllMovies() {
+        return filmixFilmDao.countAllMovies();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override public Long countYesterdayMovies() {
+        return filmixFilmDao.countYesterdayMovies();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override public Long countLastUpdMovies() {
+        return filmixFilmDao.countLastUpdMovies();
     }
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
@@ -419,27 +430,37 @@ public class FilmixServiceImpl implements FilmixService {
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     @Override public List<Film> topFilms(int page, int maxResult) {
-        return filmixFilmDao.topFilms(page ,maxResult);
+        return filmixFilmDao.topFilms(page, maxResult);
     }
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     @Override public List<Film> lastMovies(int page, int maxResult) {
-        return filmixFilmDao.lastMovies(page ,maxResult);
+        return filmixFilmDao.lastMovies(page, maxResult);
     }
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     @Override public List<Film> lastTvSeries(int page, int maxResult) {
-        return filmixFilmDao.lastTvSeries(page ,maxResult);
+        return filmixFilmDao.lastTvSeries(page, maxResult);
     }
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     @Override public List<Film> allMovies(int page, int maxResult) {
-        return filmixFilmDao.allMovies(page ,maxResult);
+        return filmixFilmDao.allMovies(page, maxResult);
     }
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     @Override public List<Film> allTvSeries(int page, int maxResult) {
-        return filmixFilmDao.allTvSeries(page ,maxResult);
+        return filmixFilmDao.allTvSeries(page, maxResult);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Override public List<String> getAllPersonNamesInDb() {
+        return filmixPersonDao.getAllPersonNamesInDb();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Override public List<PersonNames> getPersonNamesInDb() {
+        return filmixPersonDao.getPersonNamesInDb();
     }
 }
 

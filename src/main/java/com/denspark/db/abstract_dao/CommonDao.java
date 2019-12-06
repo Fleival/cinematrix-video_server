@@ -51,7 +51,7 @@ public abstract class CommonDao<E> {
     }
 
     @SuppressWarnings("unchecked")
-    protected List<E> getAll(String namedQuery) {
+    public List<E> getAll(String namedQuery) {
         return currentSession().createNamedQuery(namedQuery).getResultList();
     }
 
