@@ -1,6 +1,6 @@
 package com.denspark.core.video_parser.article_parser.impls;
 
-import com.denspark.config.CinematrixServerConfiguration;
+import com.denspark.config.CinemixServerConfiguration;
 import com.denspark.core.video_parser.article_parser.ArticleGrabber;
 import com.denspark.core.video_parser.article_parser.ArticleParser;
 import com.denspark.core.video_parser.model.XLink;
@@ -25,7 +25,7 @@ public class FilmixArticleParser extends ArticleParser {
     private FilmixService filmixService;
 
 
-    private FilmixArticleParser(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, int splitListSize, CinematrixServerConfiguration configuration) {
+    private FilmixArticleParser(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, int splitListSize, CinemixServerConfiguration configuration) {
         super(siteName, type, THREAD_COUNT, context, configuration);
         super.splitListSize = splitListSize;
         this.filmixService = (FilmixService) context.getBean("filmixService");
@@ -80,7 +80,7 @@ public class FilmixArticleParser extends ArticleParser {
         return new HashMap<>();
     }
 
-    public static FilmixArticleParser getInstance(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, int splitListSize, CinematrixServerConfiguration configuration) {
+    public static FilmixArticleParser getInstance(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, int splitListSize, CinemixServerConfiguration configuration) {
         if (mInstance == null) {
             synchronized (FilmixArticleParser.class) {
                 if (mInstance == null) {

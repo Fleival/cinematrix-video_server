@@ -1,6 +1,6 @@
 package com.denspark.task.jobs.debug;
 
-import com.denspark.config.CinematrixServerConfiguration;
+import com.denspark.config.CinemixServerConfiguration;
 import com.denspark.core.video_parser.Parser;
 import com.denspark.core.video_parser.ParserFactory;
 import com.denspark.core.video_parser.model.XLinkType;
@@ -20,8 +20,8 @@ public class DebugConfigWriterJob extends Job {
     private static final Logger logger = LoggerFactory.getLogger(com.denspark.task.jobs.movie.InitializeConfigAndUpdateMovieLinks.class);
 
     @Override public void doRun() throws JobInterruptException {
-        CinematrixServerConfiguration configuration =
-                (CinematrixServerConfiguration) SundialJobScheduler.getServletContext()
+        CinemixServerConfiguration configuration =
+                (CinemixServerConfiguration) SundialJobScheduler.getServletContext()
                         .getAttribute("configuration");
         XLinkType type = XLinkType.fromString(getJobContext().get("X_TYPE"));
         ApplicationContext context = (ApplicationContext) SundialJobScheduler.getServletContext().getAttribute("context");

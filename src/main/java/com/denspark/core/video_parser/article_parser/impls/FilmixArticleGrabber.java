@@ -32,6 +32,7 @@ public class FilmixArticleGrabber extends ArticleGrabber {
     private Film film;
     private Person person;
     private Person personInFilm;
+    private String mainCategory;
 
     AtomicInteger genreId;
     ConcurrentHashMap<String, Integer> genreMap;
@@ -39,6 +40,7 @@ public class FilmixArticleGrabber extends ArticleGrabber {
     ConcurrentHashMap<String, Integer> personMap;
     ConcurrentHashMap<String, XLink> personXLinkMap;
     AtomicInteger personXLinkMapId;
+
 
     public FilmixArticleGrabber(XLinkType type, XLink xLink, SiteCss siteCss, ConcurrentHashMap<String, Integer> genreMap, AtomicInteger genreId, ConcurrentHashMap<String, Integer> personMap, AtomicInteger personId, ConcurrentHashMap<String, XLink> personXLinkMap, AtomicInteger personXLinkMapId) {
         super(type, xLink, siteCss);
@@ -151,6 +153,7 @@ public class FilmixArticleGrabber extends ArticleGrabber {
             film.setDescriptionStory(filmArticle.selectFirst("#dle-content > article > div.full.min > div.about > div.full-story").text());
         } catch (NullPointerException e) {
         }
+
         try {
             film.setUploadDate(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse(filmArticle.selectFirst("#dle-content > article > div.full.min > div.top-date > div.block-date > time > meta").attr("content")));
         } catch (NullPointerException | ParseException e) {
@@ -173,6 +176,11 @@ public class FilmixArticleGrabber extends ArticleGrabber {
         }
 
         try {
+            this.mainCategory = filmArticle.selectFirst("#breadcrumb > span:nth-child(3) > a > span").text();
+        } catch (NullPointerException e) {
+        }
+
+        try {
             film.setActors(getParsedEntityList(filmArticle, "span:contains(В ролях:) + span", Person.class));
         } catch (NullPointerException e) {
         }
@@ -181,6 +189,7 @@ public class FilmixArticleGrabber extends ArticleGrabber {
             film.setGenres(getParsedEntityList(filmArticle, "span:contains(Жанр:) + span", Genre.class));
         } catch (NullPointerException e) {
         }
+
 
         this.film = film;
 
@@ -255,6 +264,14 @@ public class FilmixArticleGrabber extends ArticleGrabber {
         } else if (_class.isAssignableFrom(Genre.class)) {
             parsedList = getListOfSpaceAndCommaSeparatedWords(document.selectFirst(selector).text());
             ArrayList<String> newNames = new ArrayList<>();
+            if (mainCategory != null) {
+                if (mainCategory.equalsIgnoreCase("Все фильмы"))
+                    parsedList.add("Фильмы");
+                if (mainCategory.equalsIgnoreCase("Все сериалы"))
+                    parsedList.add("Сериалы");
+                if (mainCategory.equalsIgnoreCase("Все мультфильмы"))
+                    parsedList.add("Мультфильмы");
+            }
             parsedList.forEach(
                     name -> {
                         newNames.add(name);

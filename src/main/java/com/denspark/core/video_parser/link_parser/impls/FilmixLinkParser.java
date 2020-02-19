@@ -1,6 +1,6 @@
 package com.denspark.core.video_parser.link_parser.impls;
 
-import com.denspark.config.CinematrixServerConfiguration;
+import com.denspark.config.CinemixServerConfiguration;
 import com.denspark.core.video_parser.link_parser.LinkGrabber;
 import com.denspark.core.video_parser.link_parser.LinkParser;
 import com.denspark.core.video_parser.model.Link;
@@ -19,12 +19,12 @@ public class FilmixLinkParser extends LinkParser {
 
     private static volatile FilmixLinkParser mInstance;
 
-    private FilmixLinkParser(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, CinematrixServerConfiguration configuration) {
+    private FilmixLinkParser(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, CinemixServerConfiguration configuration) {
         super(siteName, type, THREAD_COUNT, configuration);
         this.filmixService = (FilmixService) context.getBean("filmixService");
     }
 
-    public static FilmixLinkParser getInstance(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, CinematrixServerConfiguration configuration) {
+    public static FilmixLinkParser getInstance(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, CinemixServerConfiguration configuration) {
         if (mInstance == null) {
             synchronized (FilmixLinkParser.class) {
                 if (mInstance == null) {

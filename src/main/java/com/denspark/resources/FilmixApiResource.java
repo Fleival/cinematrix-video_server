@@ -1,6 +1,6 @@
 package com.denspark.resources;
 
-import com.denspark.config.CinematrixServerConfiguration;
+import com.denspark.config.CinemixServerConfiguration;
 import com.denspark.core.experiments.db.EntityTester;
 import com.denspark.core.experiments.db.MtDbWriter;
 import com.denspark.core.video_parser.Parser;
@@ -17,6 +17,7 @@ import com.denspark.db.service.FilmixService;
 import com.google.common.annotations.VisibleForTesting;
 import io.dropwizard.jersey.errors.ErrorMessage;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -33,20 +34,21 @@ import java.util.regex.PatternSyntaxException;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-@Path("/filmix")
+@Controller
+@Path("/api")
 @Consumes(APPLICATION_JSON)
 @Produces(APPLICATION_JSON)
 public class FilmixApiResource {
 
     private final ApplicationContext context;
     private FilmixService filmixService;
-    private final CinematrixServerConfiguration configuration;
+    private final CinemixServerConfiguration configuration;
 
 
     @Context
     private UriInfo uriInfo;
 
-    public FilmixApiResource(ApplicationContext context, CinematrixServerConfiguration configuration) {
+    public FilmixApiResource(ApplicationContext context, CinemixServerConfiguration configuration) {
         this.context = context;
         this.filmixService = (FilmixService) context.getBean("filmixService");
         this.configuration = configuration;
@@ -140,14 +142,6 @@ public class FilmixApiResource {
     @Path("/get_ex_films")
     public Response getSpecFilms(@QueryParam("query") String query, @QueryParam("page") int page, @QueryParam("maxResult") int maxResult) {
         List<Film> films = filmixService.getSpecificFilms(query, page, maxResult);
-
-        return Response.ok(films).build();
-    }
-
-    @GET
-    @Path("/films")
-    public Response getPagedFilms(@QueryParam("page") int page, @QueryParam("maxResult") int maxResult) {
-        List<Film> films = filmixService.getPagedFilms(page, maxResult);
 
         return Response.ok(films).build();
     }
@@ -435,5 +429,13 @@ public class FilmixApiResource {
     @Path("/all_tv_series")
     public Response allTvSeries(@QueryParam("page") int page, @QueryParam("limit") int maxResult) {
         return Response.ok(filmixService.allTvSeries(page, maxResult)).build();
+    }
+
+    @GET
+    @Path("/films")
+    public Response getPagedFilms(@QueryParam("page") int page, @QueryParam("maxResult") int maxResult) {
+        List<Film> films = filmixService.getPagedFilms(page, maxResult);
+
+        return Response.ok(films).build();
     }
 }

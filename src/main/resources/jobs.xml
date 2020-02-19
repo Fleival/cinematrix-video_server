@@ -35,6 +35,38 @@
             </simple>
         </trigger>
 
+        <!--        <job>-->
+        <!--            <name>InitializeConfigAndUpdatePersonLinks</name>-->
+        <!--            <job-class>com.denspark.task.jobs.person.InitializeConfigAndUpdatePersonLinks</job-class>-->
+        <!--            <concurrency-allowed>false</concurrency-allowed>-->
+        <!--            <job-data-map>-->
+        <!--                <entry>-->
+        <!--                    <key>LINK_THREADS</key>-->
+        <!--                    <value>16</value>-->
+        <!--                </entry>-->
+        <!--                <entry>-->
+        <!--                    <key>PERSON_THREADS</key>-->
+        <!--                    <value>24</value>-->
+        <!--                </entry>-->
+        <!--                <entry>-->
+        <!--                    <key>X_TYPE</key>-->
+        <!--                    <value>PERSON_LINKS</value>-->
+        <!--                </entry>-->
+        <!--                <entry>-->
+        <!--                    <key>SPLIT_LIST_SIZE</key>-->
+        <!--                    <value>500</value>-->
+        <!--                </entry>-->
+        <!--            </job-data-map>-->
+        <!--        </job>-->
+        <!--        <trigger>-->
+        <!--            <simple>-->
+        <!--                <name>InitializeConfigAndUpdatePersonLinks-Trigger</name>-->
+        <!--                <job-name>InitializeConfigAndUpdatePersonLinks</job-name>-->
+        <!--                <repeat-count>1</repeat-count>-->
+        <!--                <repeat-interval>14400000</repeat-interval>-->
+        <!--            </simple>-->
+        <!--        </trigger>-->
+
     </schedule>
 
 </job-scheduling-data>

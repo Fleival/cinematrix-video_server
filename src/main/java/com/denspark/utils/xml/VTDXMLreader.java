@@ -321,6 +321,8 @@ public class VTDXMLreader {
 
             } catch (XPathEvalException e) {
 
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
             }
 
         }

@@ -1,6 +1,6 @@
 package com.denspark.core.video_parser.link_parser;
 
-import com.denspark.config.CinematrixServerConfiguration;
+import com.denspark.config.CinemixServerConfiguration;
 import com.denspark.core.video_parser.Parser;
 import com.denspark.core.video_parser.model.Link;
 import com.denspark.core.video_parser.model.SiteCss;
@@ -29,7 +29,7 @@ public abstract class LinkParser extends Parser {
     private Set<XLink> xLinkSet = new LinkedHashSet<>();
     private Set<Link> linkSet = new LinkedHashSet<>();
 
-    public LinkParser(String siteName, XLinkType type, int THREAD_COUNT, CinematrixServerConfiguration configuration) {
+    public LinkParser(String siteName, XLinkType type, int THREAD_COUNT, CinemixServerConfiguration configuration) {
         super(siteName, type, THREAD_COUNT, configuration);
     }
 

@@ -1,5 +1,6 @@
 package com.denspark.core.video_parser.video_models.cinema;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.annotations.Type;
@@ -138,6 +139,7 @@ public class Person implements FilmixCommonEntity, CinemaEntity, com.denspark.co
         this.pageUrl = pageUrl;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     public Date getDateOfBirth() {
         return dateOfBirth;
     }

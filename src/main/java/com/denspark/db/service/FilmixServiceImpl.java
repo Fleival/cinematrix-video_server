@@ -32,37 +32,37 @@ public class FilmixServiceImpl implements FilmixService {
     @Autowired
     private FilmixRatingDao filmixRatingDao;
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public Person createPerson(Person person) {
         return filmixPersonDao.create(person);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public List<Genre> getAllGenres() {
         return filmixGenreDao.getAll();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public List<Person> getAllPersons() {
         return filmixPersonDao.getAll();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public List<Integer> getAllPersonIdsInDb() {
         return filmixPersonDao.getAllIdsInDb();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public List<Integer> getAllFilmIdsInDb() {
         return filmixFilmDao.getAllIdsInDb();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public Map<Integer, Date> getMapOfPersonIdUploadDate() {
         List<Integer> personIdList = filmixPersonDao.getAllIdsInDb();
@@ -75,39 +75,39 @@ public class FilmixServiceImpl implements FilmixService {
         return resultMap;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public Map<Integer, Date> getMapOfFilmIdUploadDate() {
         return filmixFilmDao.getIdDateMap();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public Genre createGenre(Genre genre) {
         return filmixGenreDao.create(genre);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public Film createFilm(Film film) {
         return filmixFilmDao.create(film);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public Person loadPersonLazy(Integer id) {
         Person p = filmixPersonDao.findById(1).get();
         return p;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public Genre loadPersonLazyProxy(Integer id) {
         Genre g = filmixGenreDao.loadById(1).get();
         return g;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public Person loadPersonInit(Integer id) {
         Person p = filmixPersonDao.findById(1).get();
@@ -115,13 +115,13 @@ public class FilmixServiceImpl implements FilmixService {
         return p;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public Genre createGenreOrGet(Genre genre) {
         return filmixGenreDao.ifPresentOrCreate(genre.getName());
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED)
     @Override
     public Film buildFilmAndPersist(Film film) {
         if (film.getActors() != null) {
@@ -159,7 +159,7 @@ public class FilmixServiceImpl implements FilmixService {
         return filmixFilmDao.create(film);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED)
     @Override
     public Person buildPersonAndPersist(Person person) {
         if (person.getGenresOfFilms() != null) {
@@ -180,13 +180,13 @@ public class FilmixServiceImpl implements FilmixService {
         return filmixPersonDao.create(person);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED)
     @Override
     public Optional<Genre> findGenreById(Integer id) {
         return filmixGenreDao.findById(id);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED)
     @Override
     public Film findFilmById(Integer id) {
         Film f = filmixFilmDao.findById(id).get();
@@ -207,7 +207,7 @@ public class FilmixServiceImpl implements FilmixService {
         return f;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED)
     @Override
     public Person findPersonById(Integer id) {
         Person p = filmixPersonDao.findById(id).get();
@@ -228,13 +228,13 @@ public class FilmixServiceImpl implements FilmixService {
         return p;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED)
     @Override
     public List<Genre> getSpecificGenres(String hibQuery) {
         return filmixGenreDao.getAllSpecific(hibQuery);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED)
     @Override
     public List<Film> getSpecificFilms(String hibQuery) {
         List<Film> films = filmixFilmDao.getAllSpecific(hibQuery);
@@ -259,7 +259,7 @@ public class FilmixServiceImpl implements FilmixService {
         return films;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED)
     @Override
     public List<Person> getSpecificPersons(String hibQuery) {
         List<Person> persons = filmixPersonDao.getAllSpecific(hibQuery);
@@ -285,27 +285,27 @@ public class FilmixServiceImpl implements FilmixService {
     }
 
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED)
     @Override public Integer getMaxId() {
         return filmixFilmDao.getMaxId();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED)
     @Override public Long countAllMovies() {
         return filmixFilmDao.countAllMovies();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED)
     @Override public Long countYesterdayMovies() {
         return filmixFilmDao.countYesterdayMovies();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED)
     @Override public Long countLastUpdMovies() {
         return filmixFilmDao.countLastUpdMovies();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, readOnly = true)
     @Cacheable(value = "ehcache")
     @Override public List<Film> getSpecificFilms(String hibQuery, int page, int maxResult) {
         List<Film> films = filmixFilmDao.getAllSpecific(hibQuery, page, maxResult);
@@ -330,33 +330,14 @@ public class FilmixServiceImpl implements FilmixService {
         return films;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, readOnly = true)
     @Cacheable(value = "pagedFilms")
     @Override public List<Film> getPagedFilms(int page, int maxResult) {
-        List<Film> films = filmixFilmDao.getPagedFilms(page, maxResult);
-        films.forEach(
-                film -> {
-                    Hibernate.initialize(film.getGenres());
-                    film.setGenresId(
-                            film.getGenres()
-                                    .stream()
-                                    .map(genre -> genre.getId())
-                                    .collect(Collectors.toSet())
-                    );
-//                    Hibernate.initialize(film.getActors());
-//                    film.setActorsId(
-//                            film.getActors()
-//                                    .stream()
-//                                    .map(actor -> actor.getId())
-//                                    .collect(Collectors.toSet())
-//                    );
-                }
-        );
-        return films;
+        return initializeFilms(filmixFilmDao.getPagedFilms(page, maxResult));
     }
 
 
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, readOnly = true)
     @Cacheable(value = "pagedFilms")
     @Override public List<Film> searchFilmLike(String search, int page, int maxResult) {
         search = "%" + search + "%";
@@ -376,7 +357,7 @@ public class FilmixServiceImpl implements FilmixService {
 
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, readOnly = true)
     @Cacheable(value = "pagedFilms")
     @Override
     public List<Film> searchFilmLike(String searchName, String year, String country, String[] genres, int page, int maxResult) {
@@ -398,14 +379,14 @@ public class FilmixServiceImpl implements FilmixService {
         return films;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, readOnly = true)
     @Cacheable(value = "pagedFilms")
     @Override public List<String> getCountryList() {
         return filmixFilmDao.getCountryList();
     }
 
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void saveRating(Set<XLink> xLinkSet) {
         xLinkSet.forEach(
@@ -416,51 +397,74 @@ public class FilmixServiceImpl implements FilmixService {
         );
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, readOnly = true)
     @Override public Rating getRatingById(int id) {
         Rating r = filmixRatingDao.findById(id).get();
         return r;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override public void updateRating(Set<XLink> xLinkSet) {
         xLinkSet.forEach(
                 xLink -> filmixFilmDao.updateRating(xLink.getId(), xLink.getPosRating(), xLink.getNegRating()));
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, readOnly = true)
     @Override public List<Film> topFilms(int page, int maxResult) {
-        return filmixFilmDao.topFilms(page, maxResult);
+        return initializeFilms(filmixFilmDao.topFilms(page, maxResult));
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, readOnly = true)
     @Override public List<Film> lastMovies(int page, int maxResult) {
         return filmixFilmDao.lastMovies(page, maxResult);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, readOnly = true)
     @Override public List<Film> lastTvSeries(int page, int maxResult) {
         return filmixFilmDao.lastTvSeries(page, maxResult);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, readOnly = true)
     @Override public List<Film> allMovies(int page, int maxResult) {
         return filmixFilmDao.allMovies(page, maxResult);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, readOnly = true)
     @Override public List<Film> allTvSeries(int page, int maxResult) {
         return filmixFilmDao.allTvSeries(page, maxResult);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, readOnly = true)
     @Override public List<String> getAllPersonNamesInDb() {
         return filmixPersonDao.getAllPersonNamesInDb();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Transactional(transactionManager = "transactionSfManager", propagation = Propagation.REQUIRED, readOnly = true)
     @Override public List<PersonNames> getPersonNamesInDb() {
         return filmixPersonDao.getPersonNamesInDb();
+    }
+
+
+    private List<Film> initializeFilms(List<Film> queuedFilmList) {
+        queuedFilmList.forEach(
+                film -> {
+                    Hibernate.initialize(film.getGenres());
+                    film.setGenresId(
+                            film.getGenres()
+                                    .stream()
+                                    .map(genre -> genre.getId())
+                                    .collect(Collectors.toSet())
+                    );
+//                    Hibernate.initialize(film.getActors());
+//                    film.setActorsId(
+//                            film.getActors()
+//                                    .stream()
+//                                    .map(actor -> actor.getId())
+//                                    .collect(Collectors.toSet())
+//                    );
+                }
+        );
+        return queuedFilmList;
     }
 }
 

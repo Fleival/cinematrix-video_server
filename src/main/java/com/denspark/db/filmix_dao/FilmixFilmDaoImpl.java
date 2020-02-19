@@ -1,6 +1,6 @@
 package com.denspark.db.filmix_dao;
 
-import com.denspark.config.CinematrixServerConfiguration;
+import com.denspark.config.CinemixServerConfiguration;
 import com.denspark.core.video_parser.video_models.cinema.Film;
 import com.denspark.db.abstract_dao.CinemaCommonDao;
 import org.hibernate.query.Query;
@@ -21,7 +21,7 @@ public class FilmixFilmDaoImpl extends CinemaCommonDao<Film> implements FilmixFi
     private static final Logger logger = LoggerFactory.getLogger(FilmixFilmDaoImpl.class);
 
     @Autowired
-    private CinematrixServerConfiguration serverConfiguration;
+    private CinemixServerConfiguration serverConfiguration;
 
     @Override
     public List<Film> getAll() {

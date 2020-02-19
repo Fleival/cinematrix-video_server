@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="author" content="Denis Strelets (admin[at]sparkbrains.pp.ua)"/>
+    <title>CINEMIX api server</title>
+    <link rel="icon" type="image/svg+xml" sizes="145x141" href="./static/img/big_logo.svg">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="./css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="body-background">
+    <svg id="backgroundSvg" width="1280" height="800">
+        <defs>
+            <filter id="shadowUp">
+                <feOffset id="feOffset156" dy="-3"/>
+                <feGaussianBlur id="feGaussianBlur158" result="blur" stdDeviation="3"/>
+                <feFlood id="feFlood160" flood-opacity=".2"/>
+                <feComposite id="feComposite162" in2="blur" operator="in" result="result1"/>
+                <feComposite id="feComposite164" in="SourceGraphic" in2="result1"/>
+            </filter>
+            <filter id="c">
+                <feOffset id="feOffset167" dy="3"/>
+                <feGaussianBlur id="feGaussianBlur169" result="blur-2" stdDeviation="3"/>
+                <feFlood id="feFlood171" flood-opacity=".7"/>
+                <feComposite id="feComposite173" in2="blur-2" operator="in" result="result1"/>
+                <feComposite id="feComposite175" in="SourceGraphic" in2="result1"/>
+            </filter>
+            <linearGradient id="bgRectGradient" x1="0" y1="370" x2="400" y2="288"
+                            gradientTransform="matrix(.99286 0 0 2 9 0)" gradientUnits="userSpaceOnUse">
+                <stop id="stop178" offset="0" stop-color="#171717"/>
+                <stop id="stop180" offset="1" stop-color="#333333"/>
+            </linearGradient>
+            <path id="textPath" d="M0,639 l1280,-165"/>
+        </defs>
+        <path id="backgroundSvgBgRect" fill="url(#bgRectGradient)" d="M0,0 h1280 v600 H0 z"/>
+
+        <path id="redTriangle" fill="#e53935" d="M0,639 l1280,-165 v225 H0 z" filter="url(#shadowUp)"/>
+
+        <text id="textCinemix" fill="#e53935" filter="url(#c)" font-family="SegoePrint-Bold, 'Segoe Print'"
+              font-size="73"
+              font-weight="700" text-anchor="end">
+            <textPath href="#textPath" startOffset="95%">CineMiX</textPath>
+        </text>
+        <text x="0" y="65" id="textApi" fill="#1d1d1d" filter="url(#c)" font-family="SegoeUI, 'Segoe UI'"
+              font-size="61">
+            API server
+        </text>
+    </svg>
+</div>
+<header class="header">
+    <a class="navbar-brand" href="/"><img src="./static/img/big_logo.svg"></a>
+    <svg class="header_bg_class" id="header_bg" width="1280" height="178">
+        <defs>
+            <filter id="headerPathShadow" color-interpolation-filters="sRGB">
+                <feFlood result="flood" flood-color="#000" flood-opacity=".498"/>
+                <feComposite result="composite1" operator="in" in2="SourceGraphic" in="flood"/>
+                <feGaussianBlur result="blur" stdDeviation="4" in="composite1"/>
+                <feOffset result="offset" dy="3"/>
+                <feComposite result="composite2" in2="offset" in="SourceGraphic"/>
+            </filter>
+        </defs>
+        <path id="header_bg_path" d="M0,0 h1280 v88 H170 L64,160 H0 z" fill="#e53935" filter="url(#headerPathShadow)"/>
+    </svg>
+    <nav class="navbar top-navbar navbar-expand-md navbar-light d-flex flex-wrap justify-content-end">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Main<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Mobile application</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+            </ul>
+            <div class="navbar-text actions">
+                {{^isUserAuthenticated}}
+                    <button class="btn btn-primary btn-lg" type="button"
+                            onclick="window.location.href='/registration'">New User
+                    </button>
+
+                    <button class="btn btn-primary btn-lg" type="button"
+                            onclick="window.location.href='/login'">LogIn
+                    </button>
+                {{/isUserAuthenticated}}
+                {{#isUserAuthenticated}}
+                    <div class="user">{{userName}}</div>
+                    <button class="btn btn-primary btn-lg" type="button"
+                            onclick="window.location.href='/logout'">Logout
+                    </button>
+                {{/isUserAuthenticated}}
+
+            </div>
+        </div>
+        <div class="break"></div>
+        <div class="header-container flex-fill">
+            <div class="header-col text-center mx-auto">
+                <h1>Welcome to CINEMIX API Server</h1>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <div class="d-flex justify-content-center h-100">
+        <div class="card widget">
+            <div class="card-header-widget text-center">
+                <h3>Database info:</h3>
+            </div>
+            <div class="card-body d-flex flex-column">
+                <div class="card-body-row">
+                    <div class="label-box">
+                        <div class="label">
+                            Sever Status:
+                        </div>
+                    </div>
+                    <div class="value-box">
+                        <!-- class="status-led-green  (-on") -->
+                        <div class="status-led-green{{statusGreen}}"></div>
+                        <div class="status{{statusGreen}}">
+                            SERVER IDLE
+                        </div>
+                    </div>
+                    <div class="value-box">
+                        <!-- class="status-led-yellow (-on)" -->
+                        <div class="status-led-yellow{{statusYellow}}"></div>
+                        <div class="status{{statusYellow}}">
+                            UPDATING DATABASE NOW
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body-row">
+                    <div class="label-box">
+                        <div class="label">
+                            Films statistic:
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body-row">
+
+                    <div class="value-box">
+                        <div class="text-widget">
+                            <div class="label">
+                                <p>Total amount of films:</p>
+                            </div>
+                            <div class="value">
+                                <p>{{totalFilmsCount}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body-row">
+                    <div class="value-box">
+                        <div class="text-widget">
+                            <div class="label">
+                                <p>Added Yesterday:</p>
+                            </div>
+                            <div class="value">
+                                <p>{{yesterdayFilmsCount}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="value-box">
+                        <div class="text-widget">
+                            <div class="label">
+                                Added During Last Update:
+                            </div>
+                            <div class="value">
+                                <p>{{lastUpdFilmsCount}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between">
+                    <div class="label">
+                        Last Server Update Was:
+                    </div>
+                    <div class="value">
+                        {{elapsedAfterPreviousUpd}} min. ago
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<footer class="navbar navbar-bottom fixed-bottom">
+    <div class="d-flex justify-content-center align-items-center footer-copiright">
+        <p class="copyright">SPARK brains. Developer Denis Strelets. 2019.</p>
+    </div>
+</footer>
+<script type="text/javascript" src="./js/main.js"></script>
+</body>
+
+</html>

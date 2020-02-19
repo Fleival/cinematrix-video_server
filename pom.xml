@@ -35,12 +35,15 @@
         <dropwizard.version>2.0.0-rc13</dropwizard.version>
         <junit5.version>5.4.2</junit5.version>
         <spring.version>5.2.0.RELEASE</spring.version>
+        <spring_security.version>5.2.0.RELEASE</spring_security.version>
         <spring-data.version>Moore-RELEASE</spring-data.version>
         <mysql.version>8.0.11</mysql.version>
         <org.ehcache.version>3.4.0</org.ehcache.version>
         <hibernate.version>5.4.7.Final</hibernate.version>
+        <uap-java.version>1.4.3</uap-java.version>
+        <geoip2.version>2.13.0</geoip2.version>
 
-        <mainClass>com.denspark.CinematrixVideoApplication</mainClass>
+        <mainClass>com.denspark.CinemixVideoApplication</mainClass>
 
         <!-- You'll probably want to remove this for your project. We're just using it here
              so that dropwizard-example doesn't get deployed as a library. -->
@@ -66,6 +69,13 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
                 <version>${spring.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-bom</artifactId>
+                <version>${spring_security.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -121,6 +131,11 @@
             <artifactId>dropwizard-metrics-graphite</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-forms</artifactId>
+        </dependency>
+
         <!-- Spring Data JPA dependencies -->
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -141,10 +156,10 @@
             <artifactId>spring-context-support</artifactId>
         </dependency>
 
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework</groupId>-->
-        <!--            <artifactId>spring-webmvc</artifactId>-->
-        <!--        </dependency>-->
+        <!--                <dependency>-->
+        <!--                    <groupId>org.springframework</groupId>-->
+        <!--                    <artifactId>spring-webmvc</artifactId>-->
+        <!--                </dependency>-->
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -156,6 +171,28 @@
             <artifactId>spring-orm</artifactId>
         </dependency>
 
+        <!-- Spring Security -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+        </dependency>
+
+        <!--SPRING WEB MVC-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework</groupId>-->
+        <!--            <artifactId>spring-webmvc</artifactId>-->
+        <!--        </dependency>-->
+        <!-- HIBERNATE -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-ehcache</artifactId>
@@ -175,9 +212,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.sparkbrains.dropwizard</groupId>
-            <artifactId>Spring-dropwizard-bundle</artifactId>
-            <version>1.0</version>
+            <groupId>com.denspark.springdrop</groupId>
+            <artifactId>dropwizard-spring-integ</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
@@ -240,11 +277,11 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.jfoenix</groupId>
-            <artifactId>jfoenix</artifactId>
-            <version>8.0.9</version>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.jfoenix</groupId>-->
+        <!--            <artifactId>jfoenix</artifactId>-->
+        <!--            <version>8.0.9</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.github.code</groupId>
             <artifactId>combinator</artifactId>
@@ -264,17 +301,32 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>11.0.2</version>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.openjfx</groupId>-->
+        <!--            <artifactId>javafx-controls</artifactId>-->
+        <!--            <version>11.0.2</version>-->
+        <!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-fxml -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.openjfx</groupId>-->
+        <!--            <artifactId>javafx-fxml</artifactId>-->
+        <!--            <version>11.0.2</version>-->
+        <!--        </dependency>-->
+
+        <!-- User Agent parser -->
         <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>11.0.2</version>
+            <groupId>com.github.ua-parser</groupId>
+            <artifactId>uap-java</artifactId>
+            <version>${uap-java.version}</version>
+        </dependency>
+
+        <!-- maxmind dependency -->
+
+        <dependency>
+            <groupId>com.maxmind.geoip2</groupId>
+            <artifactId>geoip2</artifactId>
+            <version>${geoip2.version}</version>
         </dependency>
 
     </dependencies>
@@ -372,14 +424,14 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>com.zenjava</groupId>
-                <artifactId>javafx-maven-plugin</artifactId>
-                <version>8.9.0-SNAPSHOT</version>
-                <configuration>
-                    <mainClass>com.denspark.gui.App</mainClass>
-                </configuration>
-            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>com.zenjava</groupId>-->
+            <!--                <artifactId>javafx-maven-plugin</artifactId>-->
+            <!--                <version>8.9.0-SNAPSHOT</version>-->
+            <!--                <configuration>-->
+            <!--                    <mainClass>com.denspark.gui.App</mainClass>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 

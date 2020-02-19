@@ -1,10 +1,10 @@
 articleItemSelector: '#dle-content > article'
 articleItemURLSelector: '#dle-content > article > div.short > a'
 articleLastPageSelector: '#dle-content>div>a:nth-last-child(2)'
-articleListLastPageIndex: 4674
+articleListLastPageIndex: 4774
 cartoonCategorySelector: '#header > div > nav > ul > li:nth-child(3) > div > ul:nth-child(n+2)
   > li a[href]'
-cartoonListLastPageIndex: 243
+cartoonListLastPageIndex: 246
 cartoonListLastPageSelector: '#dle-content>div>a:nth-last-child(2)'
 cartoonListUrl: http://filmix.cc/multfilmy
 categoryListElementSelector: '#header>div>nav>ul>li:nth-child(1)>div>ul:gt(0)>li>a'
@@ -14,7 +14,7 @@ durationElementRegex: duration
 fileExtension: .html
 filmCategorySelector: '#header > div > nav > ul > li:nth-child(1) > div > ul:nth-child(n+2)
   > li a[href]'
-filmListLastPageIndex: 3702
+filmListLastPageIndex: 3783
 filmListLastPageSelector: '#dle-content>div>a:nth-last-child(2)'
 filmListUrl: http://filmix.cc/films
 name: Filmix
@@ -29,7 +29,7 @@ saveDir: files/sites/tmp_html
 separator: /
 serialCategorySelector: '#header > div > nav > ul > li:nth-child(2) > div > ul:nth-child(n+2)
   > li a[href]'
-serialListLastPageIndex: 707
+serialListLastPageIndex: 721
 serialListLastPageSelector: '#dle-content>div>a:nth-last-child(2)'
 serialListUrl: http://filmix.cc/serialy
 thumbnailAbsUrlKey: src

@@ -4,6 +4,7 @@ import com.denspark.core.video_parser.video_models.cinema.Film;
 import com.denspark.utils.text_utils.Base32;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -14,8 +15,9 @@ import java.util.Set;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     @Column(unique = true, nullable = false, name = "ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String firstName;
@@ -26,33 +28,52 @@ public class User {
 
     private String email;
 
+    private String city;
+
+    private String country;
+
     @Column(length = 60)
+    @JsonIgnore
     private String password;
-
+    @JsonIgnore
     private boolean enabled;
-
+    @JsonIgnore
     private boolean isUsing2FA;
-
+    @JsonIgnore
     private String secret;
 
     //
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    @JsonIgnore
     private Collection<Role> roles;
 
-    @ManyToMany(fetch = FetchType.LAZY,
+    @ManyToMany(fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_favorite_film",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "film_id", referencedColumnName = "ID")}
     )
-    private Set<Film> favoriteFilms;
+    private Set<Film> favoriteMovies;
 
     @Transient
     @JsonInclude
-    private Set<Integer> favoriteFilmsId;
+    private Set<Integer> favoriteMoviesId;
+
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_favorite_tv_series",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "film_id", referencedColumnName = "ID")}
+    )
+    private Set<Film> favoriteTvSeries;
+
+    @Transient
+    @JsonInclude
+    private Set<Integer> favoriteTvSeriesId;
 
     public User() {
         super();
@@ -100,6 +121,22 @@ public class User {
         this.email = username;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -117,12 +154,37 @@ public class User {
     }
 
     @JsonIgnore
-    public Set<Film> getFavoriteFilms() {
-        return favoriteFilms;
+    public Set<Film> getFavoriteMovies() {
+        return favoriteMovies;
     }
 
-    public void setFavoriteFilms(Set<Film> favoriteFilms) {
-        this.favoriteFilms = favoriteFilms;
+    public void setFavoriteMovies(Set<Film> favoriteMovies) {
+        this.favoriteMovies = favoriteMovies;
+    }
+
+    public Set<Integer> getFavoriteMoviesId() {
+        return favoriteMoviesId;
+    }
+
+    public void setFavoriteMoviesId(Set<Integer> favoriteMoviesId) {
+        this.favoriteMoviesId = favoriteMoviesId;
+    }
+
+    @JsonIgnore
+    public Set<Film> getFavoriteTvSeries() {
+        return favoriteTvSeries;
+    }
+
+    public void setFavoriteTvSeries(Set<Film> favoriteTvSeries) {
+        this.favoriteTvSeries = favoriteTvSeries;
+    }
+
+    public Set<Integer> getFavoriteTvSeriesId() {
+        return favoriteTvSeriesId;
+    }
+
+    public void setFavoriteTvSeriesId(Set<Integer> favoriteTvSeriesId) {
+        this.favoriteTvSeriesId = favoriteTvSeriesId;
     }
 
     public boolean isEnabled() {
@@ -178,8 +240,19 @@ public class User {
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append("User [id=").append(id).append(", firstName=").append(firstName).append(", lastName=").append(lastName).append(", email=").append(email).append(", password=").append(password).append(", enabled=").append(enabled).append(", isUsing2FA=")
-                .append(isUsing2FA).append(", secret=").append(secret).append(", roles=").append(roles).append("]");
+        builder
+                .append("User [id=").append(id)
+                .append(", firstName=").append(firstName)
+                .append(", lastName=").append(lastName)
+                .append(", gender=").append(gender)
+                .append(", email=").append(email)
+                .append(", city=").append(city)
+                .append(", country=").append(country)
+                .append(", password=").append(password)
+                .append(", enabled=").append(enabled)
+                .append(", isUsing2FA=").append(isUsing2FA)
+                .append(", secret=").append(secret)
+                .append(", roles=").append(roles).append("]");
         return builder.toString();
     }
 

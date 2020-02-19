@@ -1,7 +1,12 @@
 #PARSER CONFIGURATION
-
 config_PATH: parser_config/sites_config_css_nav.yml
 xlink_WORKING_FOLDER: xlink_dir/
+
+smtp_host: sparkbrains.pp.ua
+smtp_port: 465
+mail_username: admin@sparkbrains.pp.ua
+mail_password: d26011986
+mail_email_from: admin@sparkbrains.pp.ua
 
 #DATABASE CONFIGURATION
 #database:
@@ -55,6 +60,10 @@ logging:
     org.hibernate.SQL: INFO
     #org.hibernate.type.descriptor.sql: TRACE
     org.springframework.transaction: INFO
+    org.springframework.security.web.FilterChainProxy: DEBUG
+    logging.level.org.springframework.security: DEBUG
+    #    logging.level.org.springframework: DEBUG
+    org.eclipse.jetty: INFO
 
 
   appenders:

@@ -1,6 +1,9 @@
 package com.denspark.model.user;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -8,13 +11,15 @@ import java.util.Collection;
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     private Long id;
 
     @ManyToMany(mappedBy = "roles")
+
     private Collection<User> users;
 
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(name = "roles_privileges", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
     private Collection<Privilege> privileges;
 
@@ -47,6 +52,7 @@ public class Role {
         this.name = name;
     }
 
+    @JsonIgnore
     public Collection<User> getUsers() {
         return users;
     }
@@ -55,6 +61,7 @@ public class Role {
         this.users = users;
     }
 
+    @JsonIgnore
     public Collection<Privilege> getPrivileges() {
         return privileges;
     }

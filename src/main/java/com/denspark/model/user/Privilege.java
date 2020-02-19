@@ -1,5 +1,8 @@
 package com.denspark.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -7,7 +10,8 @@ import java.util.Collection;
 public class Privilege {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     private Long id;
 
     private String name;
@@ -42,6 +46,7 @@ public class Privilege {
         this.name = name;
     }
 
+    @JsonIgnore
     public Collection<Role> getRoles() {
         return roles;
     }

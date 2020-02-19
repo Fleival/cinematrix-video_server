@@ -1,6 +1,6 @@
 package com.denspark.core.video_parser.article_parser;
 
-import com.denspark.config.CinematrixServerConfiguration;
+import com.denspark.config.CinemixServerConfiguration;
 import com.denspark.core.video_parser.Parser;
 import com.denspark.core.video_parser.model.XLink;
 import com.denspark.core.video_parser.model.XLinkType;
@@ -31,7 +31,7 @@ public abstract class ArticleParser extends Parser {
     protected AtomicInteger genreId;
     protected AtomicInteger personId;
 
-    protected ArticleParser(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, CinematrixServerConfiguration configuration) {
+    protected ArticleParser(String siteName, XLinkType type, int THREAD_COUNT, ApplicationContext context, CinemixServerConfiguration configuration) {
         super(siteName, type, THREAD_COUNT, configuration);
         this.context = context;
     }
