@@ -455,13 +455,13 @@ public class FilmixServiceImpl implements FilmixService {
                                     .map(genre -> genre.getId())
                                     .collect(Collectors.toSet())
                     );
-//                    Hibernate.initialize(film.getActors());
-//                    film.setActorsId(
-//                            film.getActors()
-//                                    .stream()
-//                                    .map(actor -> actor.getId())
-//                                    .collect(Collectors.toSet())
-//                    );
+                    Hibernate.initialize(film.getActors());
+                    film.setActorsId(
+                            film.getActors()
+                                    .stream()
+                                    .map(actor -> actor.getId())
+                                    .collect(Collectors.toSet())
+                    );
                 }
         );
         return queuedFilmList;
